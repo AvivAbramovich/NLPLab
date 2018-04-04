@@ -1,0 +1,39 @@
+<debate url="url/to/debate">
+    <speakers>
+        <!--
+        speaker properties:
+            name - the speaker full name
+            position - "for" if support the argument, "against" otherwise
+        NOTE: all speaker's sub tags are optional!
+        -->
+        <speaker name="john snow" position="for">
+            <description>
+                some description about the speaker
+            </description>
+            <bio>
+                speaker's bio
+            </bio>
+        </speaker>
+    </speakers>
+    <results>
+        <!--
+        result properties:
+            submitters - "live" or "online"
+            when - "before" for votes before the debate, "after" for votes after debate ends
+            for - percentage of votes for the motion
+            against - percentage of votes against the motion
+            undecided - percentage of undecided votes
+        -->
+        <result submitters="live" when="before" for="30" against="50" undecided="20"/>
+    </results>
+    <transcript>
+        <!-- start and end values represent since debate begin.
+        meta represents if this is meta paragraph (not an actual speaking) -->
+        <p start="0" end="10" speaker="john snow" meta="false">
+            hello world!
+        </p>
+        <p start="10" end="20" speaker="john snow" meta="true">
+            [applause]
+        </p>
+    </transcript>
+</debate>

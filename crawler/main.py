@@ -41,6 +41,17 @@ def find_all_debates():
 
     years_ul = driver.find_element_by_class_name('years')
     for year_li in years_ul.find_elements_by_class_name('year'):
+        sleep(1)
+
+        # check if the pop up appear
+        try:
+            pop_up_div = driver.find_element_by_id('modalContent')
+        except:
+            pass
+        else:
+            pop_up_div.find_element_by_class_name('modal-header').find_element_by_tag_name('a').click()
+
+        print('year: %s' % year_li.text.split()[0])
         year_li.click()
         for month_li in year_li.find_elements_by_class_name('month'):
             # search for the month with "All" as text
@@ -58,22 +69,3 @@ def find_all_debates():
                         .find_element_by_tag_name('a')\
                         .get_attribute('href')
                     yield debate_link
-
-
-if __name__ == '__main__':
-    from sys import argv
-    # # TODO: just for test, the result should be formatted to schema
-    # if len(argv) != 2:
-    #     print('Usage: run.py <output directory path>')
-    #     exit()
-
-    sub_driver = Chrome()
-    for debate_url in find_all_debates():
-        try:
-            debate = fetch_single_debate(debate_url, sub_driver)
-        except Exception as e:
-            print('Failed to parse "%s": %s' % (debate_url, e))
-        else:
-            print('Successfully parsed "%s"' % debate_url)
-        # TODO: format to schema and then saved to file
-
