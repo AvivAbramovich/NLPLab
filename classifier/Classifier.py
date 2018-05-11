@@ -1,4 +1,3 @@
-from sklearn.feature_selection import SelectKBest
 from sklearn.svm import SVC
 from sklearn import tree
 from sklearn.model_selection import KFold
@@ -55,4 +54,6 @@ class ClassifierFactory:
     def estimate_all(self,all_feature_vector, all_label, num_of_features):
         for classifier in self.classifiers:
             classifier.fit(all_feature_vector,all_label, num_of_features)
+
+
 

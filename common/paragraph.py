@@ -6,10 +6,11 @@ class Paragraph:
         self.start_time = start_time
         self.end_time = end_time
         self.sentences = []
+        self.crowed_reation = []
 
     def __eq__(self, other):
         if isinstance(other, self.__class__):
-            return self.speaker == other.speaker and self.start_time == other.start_time and self.end_time == other.end_time and self.is_meta == other.is_meta
+            return self.speaker == other.speaker and self.start_time == other.start_time and self.end_time == other.end_time
         else:
             return False
 

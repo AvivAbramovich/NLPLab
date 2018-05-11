@@ -1,19 +1,30 @@
-from schema.parse import parse_file
-from nltk import sent_tokenize
+import os
+
 from common import *
 from sys import argv
+from schema.parse import parse_file
+from nltk import sent_tokenize
+from classifier.Classifier import ClassifierFactory
+from Features.FeatureDebate import FeatureDebate
+
+classifiers = ClassifierFactory()
 
 
-def zip_debate(debate_from_xml):
+def ZipDebate(debate_from_xml):
     zipped_debate = Debate(debate_from_xml.speakers, [], debate_from_xml.debate_results)
     last_paragraph = Paragraph(None,'',None)
     new_paragraph = None
+
     paragraph: Paragraph
     for paragraph in debate_from_xml.transcript_paragraphs:
         if paragraph == last_paragraph:
-            new_paragraph.text += paragraph.text
+            if paragraph.is_meta:
+                new_paragraph.crowed_reation.extend(paragraph.sentences)
+            else:
+                new_paragraph.text += paragraph.text
+
         else:
-            if new_paragraph != None:
+            if new_paragraph is not None:
                 new_paragraph.sentences = sent_tokenize(new_paragraph.text)
                 zipped_debate.add_transcript_paragraph(new_paragraph)
             new_paragraph = Paragraph(paragraph.speaker, paragraph.text, paragraph.start_time, paragraph.end_time, paragraph.is_meta)
@@ -23,11 +34,20 @@ def zip_debate(debate_from_xml):
 
     return zipped_debate
 
+
 if __name__ == '__main__':
     if len(argv) != 2:
         print('Usage: parse <file path>')
 
-    debate = parse_file('C:\\Users\Lior\\PycharmProjects\\NLPLab-schema\\outputs\\abolish-death-penalty.xml')
-    zip_debate = zip_debate(debate)
+    zip_debates = []
+    path = 'C:\\Users\\Lior\\Documents\\GitHub\\NLPLab\\outputs'
+    for debate_xml in os.listdir(path):
+        try:
+            debate = parse_file(path + '\\' + debate_xml)
+            zip_debate = ZipDebate(debate)
+            zip_debates.append(zip_debate)
+            f_debate = FeatureDebate(zip_debate)
+        except Exception as e:
+            print(debate_xml)
 
     print(debate)
