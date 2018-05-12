@@ -6,7 +6,7 @@ from schema.parse import parse_file
 from nltk import sent_tokenize
 from classifier.Classifier import ClassifierFactory
 from Features.FeatureDebate import FeatureDebate
-
+import time
 classifiers = ClassifierFactory()
 
 
@@ -39,7 +39,10 @@ if __name__ == '__main__':
     if len(argv) != 2:
         print('Usage: parse <file path>')
 
+    start = time.time()
     zip_debates = []
+    features_vectors = []
+    features_labels = []
     features_debates = []
     path = 'C:\\Users\\Lior\\Documents\\GitHub\\NLPLab\\outputs'
     for debate_xml in os.listdir(path):
@@ -52,4 +55,20 @@ if __name__ == '__main__':
         except Exception as e:
             print(debate_xml)
 
-    print(debate)
+    end = time.time()
+    print('total time to convert to feature debate is' + (end - start) + '\n\n\n')
+
+    for features_debate in features_debates:
+        for features_paragraph in features_debate.feature_paragraphs:
+            features_vectors.append(features_paragraph.feature_vector)
+            features_labels.append(features_paragraph.label)
+
+    start = time.time()
+    classifiers.fit_all(features_vectors,features_labels, 3)
+    end = time.time()
+    print('total time to classify is' + (end - start))
+
+    start = time.time()
+    classifiers.estimate_all(features_vectors,features_labels, 4)
+    end = time.time()
+    print('total time to estimate is' + (end - start))
