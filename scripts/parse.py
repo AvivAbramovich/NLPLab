@@ -40,13 +40,15 @@ if __name__ == '__main__':
         print('Usage: parse <file path>')
 
     zip_debates = []
+    features_debates = []
     path = 'C:\\Users\\Lior\\Documents\\GitHub\\NLPLab\\outputs'
     for debate_xml in os.listdir(path):
         try:
+            print('running on:' + debate_xml)
             debate = parse_file(path + '\\' + debate_xml)
             zip_debate = ZipDebate(debate)
             zip_debates.append(zip_debate)
-            f_debate = FeatureDebate(zip_debate)
+            features_debates.append(FeatureDebate(zip_debate))
         except Exception as e:
             print(debate_xml)
 
