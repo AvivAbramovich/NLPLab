@@ -30,7 +30,7 @@ class FeatureParagraph:
         if len(self.paragraph.sentences) != 0:
             self.feature_vector.append((len(nltk.word_tokenize(self.paragraph.text)) / len(self.paragraph.sentences)))
         else:
-            self.feature_vector.append(-1)
+            self.feature_vector.append(0)
 
     def words_avg_in_time(self):
         try:
@@ -41,7 +41,7 @@ class FeatureParagraph:
         if time != 0:
             self.feature_vector.append(len(nltk.word_tokenize(self.paragraph.text)) / time)
         else:
-            self.feature_vector.append(-1)
+            self.feature_vector.append(0)
 
     def word_sentences_in_time(self):
         try:
@@ -52,7 +52,7 @@ class FeatureParagraph:
         if time != 0:
             self.feature_vector.append(len(self.paragraph.sentences) / time)
         else:
-            self.feature_vector.append(-1)
+            self.feature_vector.append(0)
 
     def real_words_feature(self):
         list_words = nltk.word_tokenize(self.paragraph.text)

@@ -56,7 +56,7 @@ if __name__ == '__main__':
             print(debate_xml)
 
     end = time.time()
-    print('total time to convert to feature debate is' + (end - start) + '\n\n\n')
+    print('total time to convert to feature debate is' + str(end - start) + '\n\n\n')
 
     for features_debate in features_debates:
         for features_paragraph in features_debate.feature_paragraphs:
@@ -66,9 +66,9 @@ if __name__ == '__main__':
     start = time.time()
     classifiers.fit_all(features_vectors,features_labels, 3)
     end = time.time()
-    print('total time to classify is' + (end - start))
+    print('total time to classify is' + str(end - start))
 
     start = time.time()
     classifiers.estimate_all(features_vectors,features_labels, 4)
     end = time.time()
-    print('total time to estimate is' + (end - start))
+    print('total time to estimate is' + str(end - start))

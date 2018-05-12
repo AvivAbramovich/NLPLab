@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3cad1241-6c0c-49cb-aca2-0acd6127487c" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/Features/FeatureParagraph.py" beforeDir="false" afterPath="$PROJECT_DIR$/Features/FeatureParagraph.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/classifier/Classifier.py" beforeDir="false" afterPath="$PROJECT_DIR$/classifier/Classifier.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/parse.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/parse.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -17,11 +19,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="parse.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="parse.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/parse.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="71" column="33" selection-start-line="71" selection-start-column="33" selection-end-line="71" selection-end-column="33" />
+            <state relative-caret-position="255">
+              <caret line="68" column="57" lean-forward="true" selection-start-line="67" selection-start-column="4" selection-end-line="68" selection-end-column="57" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -29,71 +31,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FeatureDebate.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Features/FeatureDebate.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-120">
-              <caret line="23" column="12" selection-start-line="23" selection-start-column="12" selection-end-line="23" selection-end-column="12" />
-              <folding>
-                <element signature="e#0#25#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="paragraph.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/common/paragraph.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="7" column="22" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="22" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FeatureParagraph.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Features/FeatureParagraph.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="118">
-              <caret line="107" column="24" selection-start-line="107" selection-start-column="24" selection-end-line="107" selection-end-column="24" />
-              <folding>
-                <element signature="e#0#28#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/Anaconda3/Lib/site-packages/nltk/tokenize/__init__.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="278">
-              <caret line="128" selection-start-line="128" selection-end-line="128" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="codecs.py" pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/Anaconda3/Lib/codecs.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="322" selection-start-line="322" selection-end-line="322" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="classes.py" pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/Anaconda3/Lib/site-packages/sklearn/svm/classes.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="239">
-              <caret line="584" selection-start-line="584" selection-end-line="584" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Classifier.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Classifier.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/classifier/Classifier.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="59" lean-forward="true" selection-start-line="59" selection-end-line="59" />
+            <state relative-caret-position="272">
+              <caret line="61" selection-start-line="61" selection-end-line="62" />
+              <folding>
+                <element signature="e#0#27#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -112,6 +57,7 @@
       <find>tokenize</find>
       <find>classified</find>
       <find>feature</find>
+      <find>-1</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -128,12 +74,12 @@
         <option value="$USER_HOME$/Desktop/hw3.py" />
         <option value="$USER_HOME$/Downloads/FeatureParagraph.py" />
         <option value="$PROJECT_DIR$/Feature Models/FeatureParagraph.py" />
-        <option value="$PROJECT_DIR$/classifier/Classifier.py" />
         <option value="$PROJECT_DIR$/Feature Models/FeatureDebate.py" />
         <option value="$PROJECT_DIR$/common/paragraph.py" />
-        <option value="$PROJECT_DIR$/Features/FeatureParagraph.py" />
         <option value="$PROJECT_DIR$/Features/FeatureDebate.py" />
         <option value="$PROJECT_DIR$/scripts/parse.py" />
+        <option value="$PROJECT_DIR$/Features/FeatureParagraph.py" />
+        <option value="$PROJECT_DIR$/classifier/Classifier.py" />
       </list>
     </option>
   </component>
@@ -143,9 +89,9 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="1515" />
-    <option name="width" value="2340" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="1285" />
+    <option name="width" value="2595" />
     <option name="height" value="2075" />
   </component>
   <component name="ProjectView">
@@ -165,6 +111,11 @@
               <item name="NLPLab" type="b2602c69:ProjectViewProjectNode" />
               <item name="NLPLab" type="462c0819:PsiDirectoryNode" />
               <item name="classifier" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="NLPLab" type="b2602c69:ProjectViewProjectNode" />
+              <item name="NLPLab" type="462c0819:PsiDirectoryNode" />
+              <item name="outputs" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -323,14 +274,14 @@
     <layout>
       <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.16005205" />
       <window_info anchor="bottom" id="TODO" order="12" />
-      <window_info anchor="bottom" id="Event Log" order="5" sideWeight="0.5003253" side_tool="true" visible="true" weight="0.32650274" />
+      <window_info anchor="bottom" id="Event Log" order="5" sideWeight="0.5009759" side_tool="true" visible="true" weight="0.32650274" />
       <window_info anchor="bottom" id="Version Control" order="1" />
       <window_info anchor="bottom" id="Python Console" order="3" />
-      <window_info active="true" anchor="bottom" id="Run" order="8" sideWeight="0.49967468" visible="true" weight="0.32650274" />
+      <window_info active="true" anchor="bottom" id="Run" order="8" sideWeight="0.49902406" visible="true" weight="0.32650274" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="4" />
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info anchor="bottom" id="Debug" order="9" sideWeight="0.49967468" weight="0.3920765" />
+      <window_info anchor="bottom" id="Debug" order="9" sideWeight="0.49902406" weight="0.3920765" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="2" show_stripe_button="false" />
@@ -379,7 +330,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/classifier/Classifier.py</url>
-          <line>59</line>
+          <line>65</line>
           <option name="timeStamp" value="11" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -392,11 +343,36 @@
           <line>64</line>
           <option name="timeStamp" value="36" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/scripts/parse.py</url>
+          <line>71</line>
+          <option name="timeStamp" value="58" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/scripts/parse.py</url>
+          <line>70</line>
+          <option name="timeStamp" value="59" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/scripts/parse.py</url>
+          <line>65</line>
+          <option name="timeStamp" value="60" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/scripts/parse.py</url>
+          <line>66</line>
+          <option name="timeStamp" value="61" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/classifier/Classifier.py</url>
+          <line>59</line>
+          <option name="timeStamp" value="65" />
+        </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="56" />
+      <option name="time" value="67" />
     </breakpoint-manager>
   </component>
   <component name="debuggerHistoryManager">
@@ -449,13 +425,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/Downloads/FeatureParagraph (1).py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="799">
-          <caret line="51" lean-forward="true" selection-start-line="51" selection-end-line="51" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../NLP/venv/Lib/site-packages/nltk/tokenize/__init__.py" />
     <entry file="file://$PROJECT_DIR$/schema/parse.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -758,47 +727,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/common/paragraph.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="22" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Features/FeatureDebate.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-120">
-          <caret line="23" column="12" selection-start-line="23" selection-start-column="12" selection-end-line="23" selection-end-column="12" />
-          <folding>
-            <element signature="e#0#25#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/schema/dump.py">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Features/FeatureParagraph.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="118">
-          <caret line="107" column="24" selection-start-line="107" selection-start-column="24" selection-end-line="107" selection-end-column="24" />
-          <folding>
-            <element signature="e#0#28#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
     </entry>
     <entry file="file://$USER_HOME$/Anaconda3/Lib/site-packages/nltk/tokenize/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="278">
           <caret line="128" selection-start-line="128" selection-end-line="128" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/classifier/Classifier.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="59" lean-forward="true" selection-start-line="59" selection-end-line="59" />
         </state>
       </provider>
     </entry>
@@ -811,17 +746,61 @@
     </entry>
     <entry file="file://$USER_HOME$/Anaconda3/Lib/codecs.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="322" selection-start-line="322" selection-end-line="322" />
+        <state relative-caret-position="148">
+          <caret line="320" selection-start-line="320" selection-end-line="320" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Anaconda3/Lib/site-packages/sklearn/naive_bayes.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-99">
+          <caret line="699" column="46" selection-start-line="699" selection-start-column="46" selection-end-line="699" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common/paragraph.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="16" lean-forward="true" selection-start-column="16" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Features/FeatureParagraph.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="112" column="25" selection-start-line="112" selection-start-column="23" selection-end-line="112" selection-end-column="25" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Features/FeatureDebate.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-51">
+          <caret line="23" column="12" selection-start-line="23" selection-start-column="12" selection-end-line="23" selection-end-column="12" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scripts/parse.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="71" column="33" selection-start-line="71" selection-start-column="33" selection-end-line="71" selection-end-column="33" />
+        <state relative-caret-position="255">
+          <caret line="68" column="57" lean-forward="true" selection-start-line="67" selection-start-column="4" selection-end-line="68" selection-end-column="57" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/classifier/Classifier.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="61" selection-start-line="61" selection-end-line="62" />
+          <folding>
+            <element signature="e#0#27#0" expanded="true" />
           </folding>
         </state>
       </provider>
