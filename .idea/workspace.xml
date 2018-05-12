@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3cad1241-6c0c-49cb-aca2-0acd6127487c" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/Features/FeatureParagraph.py" beforeDir="false" afterPath="$PROJECT_DIR$/Features/FeatureParagraph.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/classifier/Classifier.py" beforeDir="false" afterPath="$PROJECT_DIR$/classifier/Classifier.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/parse.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/parse.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -34,8 +32,8 @@
       <file leaf-file-name="Classifier.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/classifier/Classifier.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="61" selection-start-line="61" selection-end-line="62" />
+            <state relative-caret-position="357">
+              <caret line="62" column="68" lean-forward="true" selection-start-line="62" selection-start-column="68" selection-end-line="62" selection-end-column="68" />
               <folding>
                 <element signature="e#0#27#0" expanded="true" />
               </folding>
@@ -330,7 +328,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/classifier/Classifier.py</url>
-          <line>65</line>
+          <line>68</line>
           <option name="timeStamp" value="11" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -365,7 +363,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/classifier/Classifier.py</url>
-          <line>59</line>
+          <line>62</line>
           <option name="timeStamp" value="65" />
         </line-breakpoint>
       </breakpoints>
@@ -797,8 +795,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/classifier/Classifier.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="61" selection-start-line="61" selection-end-line="62" />
+        <state relative-caret-position="357">
+          <caret line="62" column="68" lean-forward="true" selection-start-line="62" selection-start-column="68" selection-end-line="62" selection-end-column="68" />
           <folding>
             <element signature="e#0#27#0" expanded="true" />
           </folding>

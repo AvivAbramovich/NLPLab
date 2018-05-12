@@ -39,11 +39,14 @@ class Classifier:
             print(self.classifier_name + ' is not completed')
 
     def estimate(self, feature_vector, feature_labels, num_of_features):
-        estimator = self.classifier
-        selector = RFE(estimator, num_of_features, step=1)
-        selector = selector.fit(feature_vector, feature_labels)
-        print(self.classifier_name + ":\n" + selector.support_)
-        print(self.classifier_name + ":\n" + selector.ranking_)
+        try:
+            estimator = self.classifier
+            selector = RFE(estimator, num_of_features, step=1)
+            selector = selector.fit(feature_vector, feature_labels)
+            print(self.classifier_name + ":\n" + selector.support_)
+            print(self.classifier_name + ":\n" + selector.ranking_)
+        except:
+            print(self.classifier_name + ' cant be estimate features')
 
 
 class ClassifierFactory:
