@@ -2,6 +2,15 @@ from common import Debate
 from common import Results
 from Features.FeatureParagraph import FeatureParagraph
 
+features = ['words_avg_in_sentence',
+            'words_avg_in_time',
+            'word_sentences_in_time',
+            'real_words_feature',
+            #'person_mentioned',
+            'is_personal_experience',
+            'is_insecure',
+            'has_quote']
+
 
 class FeatureDebate:
     def __init__(self, debate):
@@ -14,8 +23,9 @@ class FeatureDebate:
         feature_paragraphs = []
         try:
             for paragraph in self.debate.transcript_paragraphs:
-                feature_paragraphs.append(FeatureParagraph(paragraph, self.set_label(paragraph.speaker.stand_for)))
-
+                feature_paragraphs.append(FeatureParagraph(paragraph,
+                                                           self.set_label(paragraph.speaker.stand_for),
+                                                           features))
         except:
             feature_paragraphs = []
 

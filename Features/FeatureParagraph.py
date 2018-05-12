@@ -7,6 +7,7 @@ st = StanfordNERTagger('C:\\Users\\Lior\\Documents\\GitHub\\NLPLab\\stanford-ner
                        'C:\\Users\\Lior\\Documents\\GitHub\\NLPLab\\stanford-ner-2018-02-27\\stanford-ner.jar',
                        encoding='utf-8')
 
+
 insecured_word = ['kind of', 'likely']
 personal_experience = ['my', 'mine']
 
@@ -18,17 +19,40 @@ class FeatureParagraph:
         self.features_names = features_names
         self.feature_vector = []
 
+        for feature_name in features_names:
+            try:
+                getattr(self, feature_name)()
+            except:
+                print(feature_name)
+                raise
 
     def words_avg_in_sentence(self):
-        self.feature_vector.append((len(nltk.word_tokenize(self.paragraph.text)) / len(self.paragraph.sentences)))
+        if len(self.paragraph.sentences) != 0:
+            self.feature_vector.append((len(nltk.word_tokenize(self.paragraph.text)) / len(self.paragraph.sentences)))
+        else:
+            self.feature_vector.append(-1)
 
     def words_avg_in_time(self):
-        time = self.paragraph.end_time - self.paragraph.start_time
-        self.feature_vector.append(len(nltk.word_tokenize(self.paragraph.text)) / time)
+        try:
+            time = self.paragraph.end_time - self.paragraph.start_time
+        except:
+            time = 0
+
+        if time != 0:
+            self.feature_vector.append(len(nltk.word_tokenize(self.paragraph.text)) / time)
+        else:
+            self.feature_vector.append(-1)
 
     def word_sentences_in_time(self):
-        time = self.paragraph.end_time - self.paragraph.start_time
-        self.feature_vector.append(len(self.paragraph.sentences) / time)
+        try:
+            time = self.paragraph.end_time - self.paragraph.start_time
+        except:
+            time = 0
+
+        if time != 0:
+            self.feature_vector.append(len(self.paragraph.sentences) / time)
+        else:
+            self.feature_vector.append(-1)
 
     def real_words_feature(self):
         list_words = nltk.word_tokenize(self.paragraph.text)
@@ -52,7 +76,7 @@ class FeatureParagraph:
 
     def person_mentioned(self):
         amount_of_person_mentioned = 0
-        for sent in nltk.sent_tokenize(self.paragraph):
+        for sent in self.paragraph.sentences:
             tokens = nltk.tokenize.word_tokenize(sent)
             tags = st.tag(tokens)
             for tag in tags:
@@ -63,7 +87,7 @@ class FeatureParagraph:
 
     def is_personal_experience(self):
         is_personal_experience = 0
-        for sent in nltk.sent_tokenize(self.paragraph):
+        for sent in self.paragraph.sentences:
             tokens = nltk.tokenize.word_tokenize(sent)
             for token in tokens:
                 if token in personal_experience:
@@ -73,7 +97,7 @@ class FeatureParagraph:
 
     def is_insecure(self):
         is_insecure_experience = 0
-        for sent in nltk.sent_tokenize(self.paragraph):
+        for sent in self.paragraph.sentences:
             tokens = nltk.tokenize.word_tokenize(sent)
             for token in tokens:
                 if token in insecured_word or str(token).endswith('ish'):
@@ -82,9 +106,9 @@ class FeatureParagraph:
         self.feature_vector.append(is_insecure_experience)
 
     def has_quote(self):
-        start_pt = self.paragraph.find("\"")
-        end_pt = self.paragraph.find("\"", start_pt + 1)  # add one to skip the opening "
-        quote = self.paragraph[start_pt + 1: end_pt + 1]  # add one to get the quote excluding the ""
+        start_pt = self.paragraph.text.find("\"")
+        end_pt = self.paragraph.text.find("\"", start_pt + 1)  # add one to skip the opening "
+        quote = self.paragraph.text[start_pt + 1: end_pt + 1]  # add one to get the quote excluding the ""
 
         if start_pt != -1:
             self.feature_vector.append(1)
