@@ -19,6 +19,8 @@ def fetch_single_debate(url, driver=None):
 
     driver.get(url)
 
+    sleep(5)  # wait the page to fully load
+
     # get the speakers
     speakers = find_speakers(driver)
 
