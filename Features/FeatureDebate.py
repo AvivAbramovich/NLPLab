@@ -6,7 +6,6 @@ features = ['words_avg_in_sentence',
             'words_avg_in_time',
             'word_sentences_in_time',
             'real_words_feature',
-            #'person_mentioned',
             'is_personal_experience',
             'is_insecure',
             'has_quote']

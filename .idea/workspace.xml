@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3cad1241-6c0c-49cb-aca2-0acd6127487c" name="Default" comment="" />
+    <list default="true" id="3cad1241-6c0c-49cb-aca2-0acd6127487c" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/Features/FeatureDebate.py" beforeDir="false" afterPath="$PROJECT_DIR$/Features/FeatureDebate.py" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -18,8 +20,8 @@
       <file leaf-file-name="parse.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/parse.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="68" column="57" selection-start-line="67" selection-start-column="4" selection-end-line="68" selection-end-column="57" />
+            <state relative-caret-position="204">
+              <caret line="23" column="31" lean-forward="true" selection-start-line="23" selection-start-column="31" selection-end-line="23" selection-end-column="31" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -27,13 +29,68 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Classifier.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Classifier.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/classifier/Classifier.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="9" selection-start-line="9" selection-end-line="9" />
+            <state relative-caret-position="394">
+              <caret line="67" lean-forward="true" selection-start-line="67" selection-end-line="67" />
               <folding>
                 <element signature="e#0#27#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FeatureDebate.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Features/FeatureDebate.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="629">
+              <caret line="37" lean-forward="true" selection-start-line="37" selection-end-line="37" />
+              <folding>
+                <element signature="e#0#25#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="abolish-death-penalty.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/outputs/abolish-death-penalty.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="221">
+              <caret column="3765" selection-start-column="3765" selection-end-column="3765" />
+              <folding>
+                <element signature="e#505#510#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="paragraph.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/common/paragraph.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="204">
+              <caret line="12" column="95" selection-start-line="12" selection-start-column="95" selection-end-line="12" selection-end-column="95" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FeatureParagraph.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Features/FeatureParagraph.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="170">
+              <caret line="10" column="6" lean-forward="true" selection-start-line="10" selection-start-column="6" selection-end-line="10" selection-end-column="6" />
+              <folding>
+                <element signature="e#0#28#0" expanded="true" />
+                <element signature="e#597#914#0" />
+                <element signature="e#961#1174#0" />
+                <element signature="e#1217#1500#0" />
+                <element signature="e#1548#1816#0" />
+                <element signature="e#1860#2152#0" />
+                <element signature="e#2191#2558#0" />
+                <element signature="e#2600#2949#0" />
+                <element signature="e#2997#3313#0" />
+                <element signature="e#3350#3691#0" />
+                <element signature="e#3726#4188#0" />
               </folding>
             </state>
           </provider>
@@ -72,10 +129,10 @@
         <option value="$PROJECT_DIR$/Feature Models/FeatureParagraph.py" />
         <option value="$PROJECT_DIR$/Feature Models/FeatureDebate.py" />
         <option value="$PROJECT_DIR$/common/paragraph.py" />
-        <option value="$PROJECT_DIR$/Features/FeatureDebate.py" />
         <option value="$PROJECT_DIR$/scripts/parse.py" />
-        <option value="$PROJECT_DIR$/Features/FeatureParagraph.py" />
         <option value="$PROJECT_DIR$/classifier/Classifier.py" />
+        <option value="$PROJECT_DIR$/Features/FeatureParagraph.py" />
+        <option value="$PROJECT_DIR$/Features/FeatureDebate.py" />
       </list>
     </option>
   </component>
@@ -85,9 +142,9 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-15" />
-    <option name="width" value="1948" />
+    <option name="width" value="1950" />
     <option name="height" value="2075" />
   </component>
   <component name="ProjectView">
@@ -106,7 +163,12 @@
             <path>
               <item name="NLPLab" type="b2602c69:ProjectViewProjectNode" />
               <item name="NLPLab" type="462c0819:PsiDirectoryNode" />
-              <item name="classifier" type="462c0819:PsiDirectoryNode" />
+              <item name="common" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="NLPLab" type="b2602c69:ProjectViewProjectNode" />
+              <item name="NLPLab" type="462c0819:PsiDirectoryNode" />
+              <item name="Features" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="NLPLab" type="b2602c69:ProjectViewProjectNode" />
@@ -265,18 +327,19 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-6" y="0" width="779" height="830" extended-state="0" />
+    <frame x="-6" y="-6" width="1549" height="837" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.32073012" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.16005205" />
       <window_info anchor="bottom" id="TODO" order="12" />
-      <window_info anchor="bottom" id="Event Log" order="5" sideWeight="0.5019557" side_tool="true" visible="true" weight="0.32551724" />
+      <window_info anchor="bottom" id="Event Log" order="5" sideWeight="0.50162655" side_tool="true" visible="true" weight="0.3920765" />
+      <window_info anchor="bottom" id="Run" order="8" sideWeight="0.49804434" weight="0.32965517" />
       <window_info anchor="bottom" id="Version Control" order="1" />
       <window_info anchor="bottom" id="Python Console" order="3" />
-      <window_info anchor="bottom" id="Run" order="8" sideWeight="0.49804434" weight="0.32965517" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="4" />
+      <window_info anchor="bottom" id="Debug" order="9" sideWeight="0.49837345" visible="true" weight="0.3920765" />
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info anchor="bottom" id="Debug" order="9" sideWeight="0.49902406" weight="0.3920765" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="2" show_stripe_button="false" />
@@ -294,24 +357,24 @@
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
       <window_info anchor="bottom" id="Inspection" order="11" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="10" weight="0.25" />
-      <window_info id="Favorites" order="0" side_tool="true" />
       <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.12491867" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="3" weight="0.25" />
       <window_info anchor="bottom" id="TODO" order="12" />
+      <window_info anchor="bottom" id="Version Control" order="1" show_stripe_button="false" />
       <window_info anchor="bottom" id="Run" order="8" weight="0.329235" />
-      <window_info anchor="bottom" id="Message" order="6" />
+      <window_info anchor="bottom" id="Find" order="7" />
+      <window_info anchor="bottom" id="Python Console" order="3" />
       <window_info active="true" anchor="bottom" id="Debug" order="9" visible="true" weight="0.3989071" />
       <window_info anchor="right" id="Database" order="2" />
       <window_info anchor="bottom" id="Terminal" order="4" />
       <window_info anchor="bottom" id="Event Log" order="5" side_tool="true" />
       <window_info anchor="bottom" id="Database Changes" order="2" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="1" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Cvs" order="10" weight="0.25" />
       <window_info anchor="right" id="SciView" order="0" />
-      <window_info anchor="bottom" id="Find" order="7" />
-      <window_info anchor="bottom" id="Python Console" order="3" />
+      <window_info anchor="bottom" id="Message" order="6" />
+      <window_info id="Favorites" order="0" side_tool="true" />
     </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -323,11 +386,6 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Features/FeatureParagraph.py</url>
-          <line>77</line>
-          <option name="timeStamp" value="35" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Features/FeatureParagraph.py</url>
           <line>64</line>
@@ -353,11 +411,25 @@
           <line>66</line>
           <option name="timeStamp" value="61" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/scripts/parse.py</url>
+          <line>50</line>
+          <option name="timeStamp" value="68" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/scripts/parse.py</url>
+          <line>51</line>
+          <option name="timeStamp" value="69" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Features/FeatureDebate.py</url>
+          <option name="timeStamp" value="70" />
+        </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="68" />
+      <option name="time" value="71" />
     </breakpoint-manager>
   </component>
   <component name="debuggerHistoryManager">
@@ -410,6 +482,16 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/classifier/Classifier.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="9" selection-start-line="9" selection-end-line="9" />
+          <folding>
+            <element signature="e#0#27#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/../NLP/venv/Lib/site-packages/nltk/tokenize/__init__.py" />
     <entry file="file://$PROJECT_DIR$/schema/parse.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -452,6 +534,16 @@
           <caret line="34" lean-forward="true" selection-start-line="34" selection-end-line="34" />
           <folding>
             <element signature="e#0#28#0" expanded="true" />
+            <element signature="e#597#914#0" />
+            <element signature="e#961#1174#0" />
+            <element signature="e#1217#1500#0" />
+            <element signature="e#1548#1816#0" />
+            <element signature="e#1860#2152#0" />
+            <element signature="e#2191#2558#0" />
+            <element signature="e#2600#2949#0" />
+            <element signature="e#2997#3313#0" />
+            <element signature="e#3350#3691#0" />
+            <element signature="e#3726#4188#0" />
           </folding>
         </state>
       </provider>
@@ -635,16 +727,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/outputs/abolish-death-penalty.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret column="2322" selection-start-column="2322" selection-end-column="2322" />
-          <folding>
-            <element signature="e#505#510#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/common/speaker.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
@@ -688,16 +770,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Temp/Rar$DIa17128.32935/hw3.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2958">
-          <caret line="189" column="25" selection-start-line="189" selection-end-line="190" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Temp/Rar$DIa17128.32935/hw3.py" />
     <entry file="file://$PROJECT_DIR$/common/debate.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
@@ -711,9 +784,6 @@
           <caret column="89" selection-start-column="89" selection-end-column="89" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/schema/dump.py">
-      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$USER_HOME$/Anaconda3/Lib/site-packages/nltk/tokenize/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -743,49 +813,69 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/common/paragraph.py">
+    <entry file="file://$PROJECT_DIR$/classifier/Classifier.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="16" lean-forward="true" selection-start-column="16" selection-end-column="16" />
+        <state relative-caret-position="394">
+          <caret line="67" lean-forward="true" selection-start-line="67" selection-end-line="67" />
+          <folding>
+            <element signature="e#0#27#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Features/FeatureParagraph.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="112" column="25" selection-start-line="112" selection-start-column="23" selection-end-line="112" selection-end-column="25" />
+        <state relative-caret-position="170">
+          <caret line="10" column="6" lean-forward="true" selection-start-line="10" selection-start-column="6" selection-end-line="10" selection-end-column="6" />
           <folding>
             <element signature="e#0#28#0" expanded="true" />
+            <element signature="e#597#914#0" />
+            <element signature="e#961#1174#0" />
+            <element signature="e#1217#1500#0" />
+            <element signature="e#1548#1816#0" />
+            <element signature="e#1860#2152#0" />
+            <element signature="e#2191#2558#0" />
+            <element signature="e#2600#2949#0" />
+            <element signature="e#2997#3313#0" />
+            <element signature="e#3350#3691#0" />
+            <element signature="e#3726#4188#0" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Features/FeatureDebate.py">
+    <entry file="file://$PROJECT_DIR$/outputs/abolish-death-penalty.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-51">
-          <caret line="23" column="12" selection-start-line="23" selection-start-column="12" selection-end-line="23" selection-end-column="12" />
+        <state relative-caret-position="221">
+          <caret column="3765" selection-start-column="3765" selection-end-column="3765" />
           <folding>
-            <element signature="e#0#25#0" expanded="true" />
+            <element signature="e#505#510#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common/paragraph.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" column="95" selection-start-line="12" selection-start-column="95" selection-end-line="12" selection-end-column="95" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scripts/parse.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="68" column="57" selection-start-line="67" selection-start-column="4" selection-end-line="68" selection-end-column="57" />
+        <state relative-caret-position="204">
+          <caret line="23" column="31" lean-forward="true" selection-start-line="23" selection-start-column="31" selection-end-line="23" selection-end-column="31" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/classifier/Classifier.py">
+    <entry file="file://$PROJECT_DIR$/Features/FeatureDebate.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" selection-start-line="9" selection-end-line="9" />
+        <state relative-caret-position="629">
+          <caret line="37" lean-forward="true" selection-start-line="37" selection-end-line="37" />
           <folding>
-            <element signature="e#0#27#0" expanded="true" />
+            <element signature="e#0#25#0" expanded="true" />
           </folding>
         </state>
       </provider>
