@@ -1,2 +1,4 @@
 from .most_common_words import MostCommonWordsFeatureExtractor
 from .words_statistics import WordsStatisticsFeaturesExtractor
+from .not_function_words import NotFunctionWordsFeaturesExtractor
+from .power_words import PowerfullWordsFeaturesExtractor

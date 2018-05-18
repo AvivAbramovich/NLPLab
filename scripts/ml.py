@@ -1,4 +1,4 @@
-from features import WordsStatisticsFeaturesExtractor, MostCommonWordsFeatureExtractor
+from features import *
 from eval.data_digest import DataDigester
 from os.path import join
 from os import listdir
@@ -20,15 +20,6 @@ sizes = [1000, 10000, 50000]
 test_rate = 0.1
 
 
-def digest(base_path, filenames, digester_ctor):
-    digester = digester_ctor()
-    for debate_filename in filenames[test_size:]:
-        print('extract features from "%s"' % debate_filename)
-        debate = parse_file(join(base_path, debate_filename))
-        digester.fit(debate)
-
-    return digester.digest()
-
 if __name__ == '__main__':
     args_parser = ArgumentParser()
     args_parser.add_argument('-p', help='path to input debate xml files')
@@ -36,7 +27,9 @@ if __name__ == '__main__':
 
     digester = DataDigester(
         MostCommonWordsFeatureExtractor.from_file(join('resources', 'wiki-100k.txt'), sizes),
-        WordsStatisticsFeaturesExtractor())
+        WordsStatisticsFeaturesExtractor(),
+        NotFunctionWordsFeaturesExtractor(),
+        PowerfullWordsFeaturesExtractor())
 
     debate_scripts = [filename for filename in listdir(args.p) if filename.endswith('.xml')]
 

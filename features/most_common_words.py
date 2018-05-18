@@ -33,13 +33,13 @@ class MostCommonWordsFeatureExtractor(TokensListFeaturesExtractorBase):
         for tokens_list in tokens_lists_generator:
             for token in tokens_list:
                 _token = token.lower()
-                # TODO: filter out PISUK
-                count += 1
-                flag = False # also contained in smaller list, so include in bigger lists
-                for index, ws in enumerate(self.words_sets):
-                    if flag or token in ws:
-                        flag = True
-                        features[index] += 1
+                if _token.isalpha():
+                    count += 1
+                    flag = False  # also contained in smaller list, so include in bigger lists
+                    for index, ws in enumerate(self.words_sets):
+                        if flag or _token in ws:
+                            flag = True
+                            features[index] += 1
 
         if count == 0:
             return [0] * len(features)

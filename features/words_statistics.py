@@ -6,7 +6,7 @@ from math import sqrt
 
 class WordsStatisticsFeaturesExtractor(TokensListFeaturesExtractorBase):
     def __init__(self, stopwords=None):
-        self.stopwords = stopwords if stopwords else __stopwords__.words('english')
+        self.__stopwords__ = stopwords if stopwords else __stopwords__.words('english') # TODO: check if lower
 
     def _extract_features_from_tokens_(self, tokens_lists_generator):
         all_words_bag = defaultdict(int)
@@ -14,10 +14,11 @@ class WordsStatisticsFeaturesExtractor(TokensListFeaturesExtractorBase):
 
         for token_list in tokens_lists_generator:
             for token in token_list:
-                # TODO: filter out PISUK (',', '.', etc..)
-                all_words_bag[token] += 1
-                if token not in self.stopwords:
-                    no_sw_bag[token] += 1
+                _token = token.lower()
+                if _token.isalpha():
+                    all_words_bag[_token] += 1
+                    if _token not in self.__stopwords__:
+                        no_sw_bag[_token] += 1
 
         return [len(all_words_bag),         # number of different tokens
                 len(no_sw_bag),             # number of different tokens not include stopwords
