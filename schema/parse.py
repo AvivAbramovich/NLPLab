@@ -30,8 +30,8 @@ def __parse_speaker__(speaker_element):
     desc_elem = speaker_element.find('description')
     bio_elem = speaker_element.find('bio')
 
-    desc = desc_elem.text if desc_elem else None
-    bio = bio_elem.text if bio_elem else None
+    desc = desc_elem.text if len(desc_elem) else None
+    bio = bio_elem.text if len(bio_elem) else None
 
     return Speaker(name, for_motion, desc, bio)
 
