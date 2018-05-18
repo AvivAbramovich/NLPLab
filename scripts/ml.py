@@ -4,7 +4,6 @@ from os.path import join
 from os import listdir
 from schema.parse import parse_file
 from argparse import ArgumentParser
-from math import ceil
 
 # cross validation
 from sklearn.model_selection import cross_val_score
@@ -13,7 +12,6 @@ from sklearn.model_selection import cross_val_score
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.neighbors import KNeighborsClassifier
-
 
 
 sizes = [1000, 10000, 50000]
@@ -29,7 +27,10 @@ if __name__ == '__main__':
         MostCommonWordsFeatureExtractor.from_file(join('resources', 'wiki-100k.txt'), sizes),
         WordsStatisticsFeaturesExtractor(),
         NotFunctionWordsFeaturesExtractor(),
-        PowerfullWordsFeaturesExtractor())
+        PowerfulWordsFeaturesExtractor(),
+        ScienceRelatedWordsFeaturesExtractor.from_file(join('resources', 'science.txt')),
+        UniversitiesNamesFeaturesExtractor(join('resources', 'universities.txt'))
+    )
 
     debate_scripts = [filename for filename in listdir(args.p) if filename.endswith('.xml')]
 

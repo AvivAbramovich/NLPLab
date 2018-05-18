@@ -44,6 +44,3 @@ class MostCommonWordsFeatureExtractor(TokensListFeaturesExtractorBase):
         if count == 0:
             return [0] * len(features)
         return [float(f) / count for f in features]
-
-
-
