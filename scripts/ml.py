@@ -29,7 +29,9 @@ if __name__ == '__main__':
         NotFunctionWordsFeaturesExtractor(),
         PowerfulWordsFeaturesExtractor(),
         ScienceRelatedWordsFeaturesExtractor.from_file(join('resources', 'science.txt')),
-        UniversitiesNamesFeaturesExtractor(join('resources', 'universities.txt'))
+        UniversitiesNamesFeaturesExtractor(join('resources', 'universities.txt')),
+        StatisticsFeaturesExtractor(),
+        AudienceReactionsFeaturesExtractor()
     )
 
     debate_scripts = [filename for filename in listdir(args.p) if filename.endswith('.xml')]

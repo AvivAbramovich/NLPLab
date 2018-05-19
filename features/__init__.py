@@ -4,3 +4,5 @@ from .not_function_words import NotFunctionWordsFeaturesExtractor
 from .power_words import PowerfulWordsFeaturesExtractor
 from .science_related_words import ScienceRelatedWordsFeaturesExtractor
 from .universities import UniversitiesNamesFeaturesExtractor
+from .audience import AudienceReactionsFeaturesExtractor
+from .statistics import StatisticsFeaturesExtractor
