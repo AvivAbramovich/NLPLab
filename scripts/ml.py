@@ -15,8 +15,6 @@ from sklearn.neighbors import KNeighborsClassifier
 
 
 sizes = [1000, 10000, 50000]
-test_rate = 0.1
-
 
 if __name__ == '__main__':
     args_parser = ArgumentParser()
