@@ -2,7 +2,7 @@ from .most_common_words import MostCommonWordsFeatureExtractor
 from .words_statistics import WordsStatisticsFeaturesExtractor
 from .not_function_words import NotFunctionWordsFeaturesExtractor
 from .power_words import PowerfulWordsFeaturesExtractor
-from .science_related_words import ScienceRelatedWordsFeaturesExtractor
+from .science_related_words import ScienceRelatedPhrasesFeaturesExtractor
 from .universities import UniversitiesNamesFeaturesExtractor
 from .audience import AudienceReactionsFeaturesExtractor
 from .statistics import StatisticsFeaturesExtractor

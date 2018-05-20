@@ -39,3 +39,5 @@ class PowerfulWordsFeaturesExtractor(TokensListFeaturesExtractorBase):
             return [0]
         return [powerful_count / float(total_count)]
 
+    def features_descriptions(self):
+        return ['per. of powerful words']

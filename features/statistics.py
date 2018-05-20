@@ -30,3 +30,10 @@ class StatisticsFeaturesExtractor(IFeaturesExtractor):
                         phrases_count += 1
 
         return [numbers_count, per_count, phrases_count]
+
+    def features_descriptions(self):
+        return [
+            'num. of numbers',
+            'num. of percentages',
+            'num. of statistics phrases'
+        ]

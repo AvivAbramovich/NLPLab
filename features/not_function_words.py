@@ -21,3 +21,6 @@ class NotFunctionWordsFeaturesExtractor(TokensListFeaturesExtractorBase):
         if total_count == 0:
             return [0]
         return [nf_count / float(total_count)]
+
+    def features_descriptions(self):
+        return ['per. of non function words']

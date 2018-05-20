@@ -24,3 +24,6 @@ class UniversitiesNamesFeaturesExtractor(IFeaturesExtractor):
                         count += 1
 
         return [count]
+
+    def features_descriptions(self):
+        return ['num. of universities names']

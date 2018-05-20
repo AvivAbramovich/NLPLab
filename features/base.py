@@ -14,3 +14,11 @@ class IFeaturesExtractor:
                 Must returns the same number of features for each call and in the same order!
         """
         pass
+
+    @abstractmethod
+    def features_descriptions(self):
+        """
+        :return: list that each element is a short str that describe the feature the extract features returns.
+                    the list must be in the length of the result of extract_features
+        """
+        pass

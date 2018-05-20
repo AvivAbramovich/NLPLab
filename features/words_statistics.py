@@ -36,3 +36,11 @@ class WordsStatisticsFeaturesExtractor(TokensListFeaturesExtractorBase):
             std += (count - avg) ** 2
 
         return sqrt(std/len(dictionary))
+
+    def features_descriptions(self):
+        return [
+            'num. of different tokens',
+            'num. of non-stopwords tokens',
+            'std of tokens',
+            'std of non-stopwords tokens'
+        ]
