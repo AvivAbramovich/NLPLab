@@ -1,4 +1,4 @@
-from .base import IFeaturesExtractor, abstractmethod, ABCMeta
+from features.base import IFeaturesExtractor, abstractmethod, ABCMeta
 from nltk import word_tokenize
 
 
@@ -20,4 +20,4 @@ class TokensListFeaturesExtractorBase(IFeaturesExtractor):
     @staticmethod
     def __tokens_generator__(debate, speaker):
         for p in debate.enum_speaker_paragraphs(speaker):
-            yield word_tokenize(p)
+            yield word_tokenize(p.text)
