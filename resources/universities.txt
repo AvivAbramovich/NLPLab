@@ -1,0 +1,24 @@
+mit
+stanford
+harvard
+caltech
+cambridge
+oxford
+imperial college london
+university of chicago
+eth zurich
+nanyang technological
+ecolo polytechnique
+princeton
+cornell university
+national university of singapore
+yale
+john hopkins
+columbia university
+university of pennsylvania
+australian national university
+university of michigan
+duke
+edinburgh
+king's college london
+tsinghua university

@@ -11,11 +11,10 @@ class MostCommonWordsFeatureExtractor(TokensListFeaturesExtractorBase):
         """
         self.words_sets = []
         current_list = words_list
-        sum = 0
-        for size in sizes:
-            self.words_sets.append(current_list[:size-sum])
-            current_list = current_list[size-sum:]
-            sum += size
+        for ind, size in enumerate(sizes):
+            cur_size = size - (sizes[ind-1] if ind else 0)
+            self.words_sets.append(current_list[:cur_size])
+            current_list = current_list[cur_size:]
 
         if current_list:
             self.words_sets.append(current_list)
@@ -45,5 +44,7 @@ class MostCommonWordsFeatureExtractor(TokensListFeaturesExtractorBase):
             return [0] * len(features)
         return [float(f) / count for f in features]
 
-
-
+    def features_descriptions(self):
+        lens = [len(s) for s in self.words_sets]
+        asums = [sum(lens[:i]) for i in range(1, len(lens)+1)]
+        return ['per. of words from most common %d' % s for s in asums]

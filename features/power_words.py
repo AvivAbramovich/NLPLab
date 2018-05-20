@@ -1,7 +1,7 @@
 from .tokens import TokensListFeaturesExtractorBase
 
 
-class PowerfullWordsFeaturesExtractor(TokensListFeaturesExtractorBase):
+class PowerfulWordsFeaturesExtractor(TokensListFeaturesExtractorBase):
     __default_list__ = [
         'might',
         'should',
@@ -9,6 +9,14 @@ class PowerfullWordsFeaturesExtractor(TokensListFeaturesExtractorBase):
         'could',
         'couldnn\'t',
         'must',
+        'would',
+        'would\'nt',
+        'biggest',
+        'worst',
+        'best'
+        'worst'
+        'ever',
+        'never',
         # TODO: add more words!
     ]
 
@@ -31,3 +39,5 @@ class PowerfullWordsFeaturesExtractor(TokensListFeaturesExtractorBase):
             return [0]
         return [powerful_count / float(total_count)]
 
+    def features_descriptions(self):
+        return ['per. of powerful words']
