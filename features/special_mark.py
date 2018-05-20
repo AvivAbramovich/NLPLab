@@ -9,7 +9,7 @@ class MarksStatisticsFeaturesExtractor(IFeaturesExtractor):
         # TODO: add more words!
     ]
 
-    def __init__(self, special_marks = None):
+    def __init__(self, special_marks=None):
         self.special_marks = special_marks if special_marks else self.__default_list__
 
     def extract_features(self, debate, speaker):
@@ -27,8 +27,10 @@ class MarksStatisticsFeaturesExtractor(IFeaturesExtractor):
 
         len_special_mark = [len(dict_special_mark[key]) for key in dict_special_mark.keys()]
         sum_special_mark = [sum(len(s) for s in dict_special_mark[key]) for key in dict_special_mark.keys()]
-        avg_special_mark = [0 if len_special_mark[i] == 0 else sum_special_mark[i] / len_special_mark[i] for i in range(len(len_special_mark))]
-        special_mark_ratio = [0 if len(list_sentences) == 0 else len_special_mark[i] / len(list_sentences)for i in range(len(len_special_mark))]
+        avg_special_mark = [0 if len_special_mark[i] == 0 else sum_special_mark[i] / len_special_mark[i] for i in
+                            range(len(len_special_mark))]
+        special_mark_ratio = [0 if len(list_sentences) == 0 else len_special_mark[i] / len(list_sentences) for i in
+                              range(len(len_special_mark))]
 
         feature_vector.extend(len_special_mark)
         feature_vector.extend(sum_special_mark)
@@ -36,6 +38,3 @@ class MarksStatisticsFeaturesExtractor(IFeaturesExtractor):
         feature_vector.extend(special_mark_ratio)
 
         return feature_vector
-
-
-
