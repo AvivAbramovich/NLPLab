@@ -1,7 +1,8 @@
 from features.tokens import TokensListFeaturesExtractorBase
 from nltk import word_tokenize
 from numpy import array
-import csv
+import unicodecsv as csv
+import codecs
 
 
 class DataDigester:
@@ -44,8 +45,8 @@ class DataDigester:
         return array(self.__data__), array(self.__labels__)
 
     def export(self, path):
-        with open(path, 'wb') as fh:
-            wr = csv.writer(fh, quoting=csv.QUOTE_ALL)
+        with codecs.open(path, 'w', 'utf-8') as fh:
+            wr = csv.writer(fh, quoting=csv.QUOTE_ALL, encoding='utf-8')
 
             # headers
             headers = ['debate', 'speaker', 'label']
@@ -60,7 +61,6 @@ class DataDigester:
                        self.__speakers_names__[ind],
                        self.__labels__[ind]]
                 row += self.__data__[ind]
-                # row = [str(i).encode('utf-8') for i in row]
 
                 try:
                     wr.writerow(row)
@@ -70,3 +70,11 @@ class DataDigester:
     @staticmethod
     def __create_tokens_lists_list(debate, speaker):
         return [word_tokenize(p.text) for p in debate.enum_speaker_paragraphs(speaker, include_meta=False)]
+
+    @staticmethod
+    def __get_label__(debate, speaker):
+        # winner by the live audience
+        results = debate.results.live_audience_results.after_debate_votes
+        fm = results.for_the_motion
+        am = results.against_the_motion
+        return int((fm > am) ^ speaker.stand_for)  # TODO: debug!!!

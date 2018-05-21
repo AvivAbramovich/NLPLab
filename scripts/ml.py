@@ -20,6 +20,7 @@ if __name__ == '__main__':
     args_parser = ArgumentParser()
     args_parser.add_argument('-p', help='path to input debate xml files')
     args_parser.add_argument('--csv', help='path to save the features as csv', default=None)
+    args_parser.add_argument('-nz', action='store_true', help='don\'t zip the debates before extracting features')
     args = args_parser.parse_args()
 
     digester = DataDigester(
@@ -30,7 +31,8 @@ if __name__ == '__main__':
         ScienceRelatedPhrasesFeaturesExtractor.from_file(join('resources', 'science.txt')),
         UniversitiesNamesFeaturesExtractor(join('resources', 'universities.txt')),
         StatisticsFeaturesExtractor(),
-        AudienceReactionsFeaturesExtractor()
+        AudienceReactionsFeaturesExtractor(),
+        SpeakingTimeFeaturesExtractor()
     )
 
     debate_scripts = [filename for filename in listdir(args.p) if filename.endswith('.xml')]
@@ -38,6 +40,8 @@ if __name__ == '__main__':
     for debate_filename in debate_scripts:
         print('extract features from "%s"' % debate_filename)
         debate = parse_file(join(args.p, debate_filename))
+        if not args.nz:
+            debate = debate.zip()
         digester.fit(debate, name=debate_filename)
 
     data, labels = digester.digest()
