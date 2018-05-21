@@ -1,0 +1,20 @@
+shuli notes:
+1. every debate yeild 5 feature vectors:
+	a. team1[0] || team2[0]
+	b. team1[1] || team2[0]
+	c. team1[0] || team2[1]
+	d. team2[1] || team2[1]
+	e. team1_merged || team2_merged
+
+2. labels are the changes (in percantages) on the votes between votes before and after the debate
+3. use select_best_k to observe best features
+
+current work:
+Aviv:
+	Work on new architecture due to Shuly instructions
+Lior:
+	Features:
+		1. (10) Talk to audience
+		2. (14) Length of sentences
+		3. (13) Famous persons mentions
+		4. Finish last week features
