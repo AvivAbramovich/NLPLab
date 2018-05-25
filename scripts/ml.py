@@ -53,6 +53,8 @@ if __name__ == '__main__':
         KNeighborsClassifier()
     ]
 
+    # TODO: now that the labels are not binaries, what the cross validation scores mean ?
+
     for cls in classifiers:
         scores = cross_val_score(cls, data, labels, cv=5)
         print('"%s" cross-validation average scores: %.3f' % (cls.__class__.__name__, sum(scores)/len(scores)))

@@ -1,7 +1,7 @@
-from interfaces import IFeaturesExtractor
+from interfaces import SentencesFeaturesExtractorBase
 
 
-class ScienceRelatedPhrasesFeaturesExtractor(IFeaturesExtractor):
+class ScienceRelatedPhrasesFeaturesExtractor(SentencesFeaturesExtractorBase):
     def __init__(self, phrases_list):
         """
         :param phrases_list: a list of the words
@@ -14,11 +14,11 @@ class ScienceRelatedPhrasesFeaturesExtractor(IFeaturesExtractor):
             return ScienceRelatedPhrasesFeaturesExtractor(
                 [line.strip().lower() for line in fh.readlines() if '#' not in line])
 
-    def extract_features(self, debate, speaker):
+    def extract_features_from_sentences(self, _, sentences_list_list):
         count = 0
-        for paragraph in debate.enum_speaker_paragraphs(speaker):
-            if not paragraph.is_meta:
-                text = paragraph.text.lower()
+        for p in sentences_list_list:
+            for sentence in p:
+                text = sentence.lower()
                 for word in self.__phrases__:
                     if word in text:
                         count += 1

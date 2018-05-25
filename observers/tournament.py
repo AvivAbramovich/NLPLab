@@ -7,8 +7,9 @@ from nltk import sent_tokenize, word_tokenize
 
 
 class TournamentDebatesObserver(IDebatesObserver):
-    def __init__(self, *features_extractors):
+    def __init__(self, features_extractors, online_audience_proportion=0.2):
         self.__features_extractors__ = features_extractors
+        self.online_audience_proportion = online_audience_proportion
         self.__data__ = []
         self.__labels__ = []
         self.__names__ = []
@@ -44,8 +45,12 @@ class TournamentDebatesObserver(IDebatesObserver):
         # fv that treats the speakers in each side as the same person
         self.__data__.append(self.__create_mutual_features_vector__(debate, True) +
                              self.__create_mutual_features_vector__(debate, False))
+        self.__speakers_names__.append(('All speakers', 'All speakers'))
 
-        self.__labels__ += [label] * ((len(for_motion_fv) * len(against_motion_fv)) + 1)
+        num_records = (len(for_motion_fv) * len(against_motion_fv)) + 1
+
+        self.__labels__ += [label] * num_records
+        self.__names__ += [name] * num_records
 
     def digest(self):
         return array(self.__data__), array(self.__labels__)
@@ -55,10 +60,13 @@ class TournamentDebatesObserver(IDebatesObserver):
             wr = csv.writer(fh, quoting=csv.QUOTE_ALL, encoding='utf-8')
 
             # headers
-            headers = ['debate', 'for motion', 'against motion', 'label']
+            features_headers = []
             for extractor in self.__features_extractors__:
-                features_descs = extractor.features_descriptions()
-                headers += features_descs
+                features_headers += extractor.features_descriptions()
+
+            headers = ['debate', 'for motion', 'against motion', 'label'] \
+                      + ['(f) %s' % fh for fh in features_headers] \
+                      + ['(a) %s' % fh for fh in features_headers]
             wr.writerow(headers)
             del headers
 
@@ -82,27 +90,30 @@ class TournamentDebatesObserver(IDebatesObserver):
         tokens = interfaces.TokensListFeaturesExtractorBase\
             .split_to_tokens(debate, speaker) if self.__has_tokens_features_extractor__ else None
 
-        return self.__create_features_vector_inner_(paragraphs, sentences, tokens)
+        return self.__create_features_vector_inner_(debate, paragraphs, sentences, tokens)
 
     def __create_mutual_features_vector__(self, debate, stand_for):
-        paragraphs = [p for p in debate.transcript_paragraphs if p.speaker.stand_for == stand_for]
-        sentences = [sent_tokenize(p.text) for p in paragraphs] if self.__has_sentences_features_extractor__ else None
-        tokens = [word_tokenize(p.text) for p in paragraphs] if self.__has_tokens_features_extractor__ else None
+        paragraphs = [p for p in debate.transcript_paragraphs
+                      if p.speaker.stand_for == stand_for]
+        sentences = [sent_tokenize(p.text) for p in paragraphs if not p.is_meta] \
+            if self.__has_sentences_features_extractor__ else None
+        tokens = [word_tokenize(p.text) for p in paragraphs if not p.is_meta] \
+            if self.__has_tokens_features_extractor__ else None
 
         if not self.__has_paragraphs_features_extractor__:
             paragraphs = None
 
-        return self.__create_features_vector_inner_(paragraphs, sentences, tokens)
+        return self.__create_features_vector_inner_(debate, paragraphs, sentences, tokens)
 
-    def __create_features_vector_inner_(self, paragraphs, sentences, tokens):
+    def __create_features_vector_inner_(self, debate, paragraphs, sentences, tokens):
         features_vector = []
         for features_extractor in self.__features_extractors__:
             if isinstance(features_extractor, interfaces.ParagraphsFeaturesExtractorBase):
-                features = features_extractor.extract_features_from_paragraphs(paragraphs)
+                features = features_extractor.extract_features_from_paragraphs(debate, paragraphs)
             elif isinstance(features_extractor, interfaces.SentencesFeaturesExtractorBase):
-                features = features_extractor.extract_features_from_sentences(sentences)
+                features = features_extractor.extract_features_from_sentences(debate, sentences)
             elif isinstance(features_extractor, interfaces.TokensListFeaturesExtractorBase):
-                features = features_extractor.extract_features_from_tokens(tokens)
+                features = features_extractor.extract_features_from_tokens(debate, tokens)
             else:
                 print('Warning! tournament does not supports FeaturesExtractor that are not Paragraphs,'
                       ' Sentences or Tokens features extractors')
@@ -112,13 +123,16 @@ class TournamentDebatesObserver(IDebatesObserver):
 
         return features_vector
 
-    @staticmethod
-    def __create_label__(debate):
+    def __create_label__(self, debate):
         # the changes (in percentages) in for motion (in average between live and online audience)
-        f = TournamentDebatesObserver.__calc_results_change__
-        return (f(debate.results.online_audience_results) + f(debate.results.live_audience_results)) / 2
+
+        change = (self.online_audience_proportion * self.__calc_results_change__(debate.results.online_audience_results)) \
+                 + ((1 - self.online_audience_proportion) * self.__calc_results_change__(debate.results.live_audience_results))
+
+        # NOTE: should be integer number for classifier classes
+        return int(change)
 
     @staticmethod
     def __calc_results_change__(results):
         return 100 * (results.after_debate_votes.for_the_motion - results.before_debate_votes.for_the_motion)\
-               / results.before_debate_votes.for_the_motion
+               / float((results.before_debate_votes.for_the_motion))

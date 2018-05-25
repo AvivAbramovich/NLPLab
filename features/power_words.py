@@ -23,7 +23,7 @@ class PowerfulWordsFeaturesExtractor(TokensListFeaturesExtractorBase):
     def __init__(self, words=None):
         self.__words__ = words if words else self.__default_list__
 
-    def extract_features_from_tokens(self, tokens_lists_list):
+    def extract_features_from_tokens(self, _, tokens_lists_list):
         powerful_count = 0
         total_count = 0
 

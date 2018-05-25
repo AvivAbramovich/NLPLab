@@ -1,8 +1,8 @@
 from warnings import warn
-from interfaces import IFeaturesExtractor
+from interfaces import ParagraphsFeaturesExtractorBase
 
 
-class AudienceReactionsFeaturesExtractor(IFeaturesExtractor):
+class AudienceReactionsFeaturesExtractor(ParagraphsFeaturesExtractorBase):
     __applause__ = 'applause'
     __affirmative__ = 'affirmative'
     __bell__ = 'bell'
@@ -14,14 +14,14 @@ class AudienceReactionsFeaturesExtractor(IFeaturesExtractor):
     __laughter__ = ['laughter', 'laughs']
     __speaking_simultaneously__ = 'simultaneous'
 
-    def extract_features(self, debate, speaker):
+    def extract_features_from_paragraphs(self, _, paragraphs_list):
         applause_count = 0
         laugh_count = 0
         affirmative_count = 0
         bell_count = 0
         speaking_simultaneously_count = 0
 
-        for p in debate.enum_speaker_paragraphs(speaker):
+        for p in paragraphs_list:
             if p.is_meta:
                 t = p.text.lower().replace('.', '').replace(' ', '')
                 flag = False

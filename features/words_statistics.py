@@ -8,14 +8,14 @@ class WordsStatisticsFeaturesExtractor(TokensListFeaturesExtractorBase):
     def __init__(self, stopwords=None):
         self.__stopwords__ = stopwords if stopwords else __stopwords__.words('english') # TODO: check if lower
 
-    def extract_features_from_tokens(self, tokens_lists_list):
+    def extract_features_from_tokens(self, _, tokens_lists_list):
         all_words_bag = defaultdict(int)
         no_sw_bag = defaultdict(int)
 
         for token_list in tokens_lists_list:
             for token in token_list:
-                _token = token.lower()
-                if _token.isalpha():
+                if token.isalpha():
+                    _token = token.lower()
                     all_words_bag[_token] += 1
                     if _token not in self.__stopwords__:
                         no_sw_bag[_token] += 1

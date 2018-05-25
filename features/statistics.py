@@ -1,8 +1,8 @@
 from re import findall
-from interfaces import IFeaturesExtractor
+from interfaces import SentencesFeaturesExtractorBase
 
 
-class StatisticsFeaturesExtractor(IFeaturesExtractor):
+class StatisticsFeaturesExtractor(SentencesFeaturesExtractorBase):
     __NUMBERS_REGEX__ = '\d+'
     __PERCENTAGES_REGEX__ = '\d+%'
     __phrases__ = [
@@ -15,16 +15,16 @@ class StatisticsFeaturesExtractor(IFeaturesExtractor):
         # TODO: add more
     ]
 
-    def extract_features(self, debate, speaker):
+    def extract_features_from_sentences(self, _, sentences_list_list):
         numbers_count = 0
         per_count = 0
         phrases_count = 0
 
-        for p in debate.enum_speaker_paragraphs(speaker):
-            if not p.is_meta:
-                numbers_count += len(findall(self.__NUMBERS_REGEX__, p.text))
-                per_count += len(findall(self.__PERCENTAGES_REGEX__, p.text))
-                t = p.text.lower()
+        for p in sentences_list_list:
+            for sentence in p:
+                numbers_count += len(findall(self.__NUMBERS_REGEX__, sentence))
+                per_count += len(findall(self.__PERCENTAGES_REGEX__, sentence))
+                t = sentence.lower()
                 for phrase in self.__phrases__:
                     if phrase in t:
                         phrases_count += 1

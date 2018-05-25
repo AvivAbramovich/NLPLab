@@ -26,10 +26,10 @@ class MostCommonWordsFeatureExtractor(TokensListFeaturesExtractorBase):
                 [line.strip().lower() for line in fh.readlines() if '#' not in line],
                 sizes)
 
-    def extract_features_from_tokens(self, tokens_lists_list):
+    def extract_features_from_tokens(self, _, tokens_lists_list):
         features = [0]*len(self.words_sets)
         count = 0
-        for tokens_list in tokens_lists_listw:
+        for tokens_list in tokens_lists_list:
             for token in tokens_list:
                 _token = token.lower()
                 if _token.isalpha():

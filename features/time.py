@@ -1,16 +1,16 @@
 from nltk import sent_tokenize
-from interfaces import IFeaturesExtractor
+from interfaces import ParagraphsFeaturesExtractorBase
 
 
-class SpeakingTimeFeaturesExtractor(IFeaturesExtractor):
-    def extract_features(self, debate, speaker):
+class SpeakingTimeFeaturesExtractor(ParagraphsFeaturesExtractorBase):
+    def extract_features_from_paragraphs(self, debate, paragraphs_list):
         total_speaking_time = 0
         last_paragraph_time_start = -1
         num_paragraphs = 0
         num_sentences = 0  # for proportion of num sentences, we need the other speakers num sentences.
                            # for now, just avg. sentences for p and for time
 
-        for p in debate.enum_speaker_paragraphs(speaker):
+        for p in paragraphs_list:
             num_paragraphs += 1
             num_sentences += len(sent_tokenize(p.text))
 

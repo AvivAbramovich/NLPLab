@@ -6,7 +6,7 @@ class NotFunctionWordsFeaturesExtractor(TokensListFeaturesExtractorBase):
     def __init__(self, words_to_ignore=None):
         self.__words__ = words_to_ignore if words_to_ignore else __stopwords__.words('english')
 
-    def extract_features_from_tokens(self, tokens_lists_list):
+    def extract_features_from_tokens(self, _, tokens_lists_list):
         nf_count = 0
         total_count = 0
 
