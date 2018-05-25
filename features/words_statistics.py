@@ -1,18 +1,18 @@
-from .tokens import TokensListFeaturesExtractorBase
-from nltk.corpus import stopwords as __stopwords__
 from collections import defaultdict
 from math import sqrt
+from nltk.corpus import stopwords as __stopwords__
+from interfaces import TokensListFeaturesExtractorBase
 
 
 class WordsStatisticsFeaturesExtractor(TokensListFeaturesExtractorBase):
     def __init__(self, stopwords=None):
         self.__stopwords__ = stopwords if stopwords else __stopwords__.words('english') # TODO: check if lower
 
-    def _extract_features_from_tokens_(self, tokens_lists_generator):
+    def extract_features_from_tokens(self, tokens_lists_list):
         all_words_bag = defaultdict(int)
         no_sw_bag = defaultdict(int)
 
-        for token_list in tokens_lists_generator:
+        for token_list in tokens_lists_list:
             for token in token_list:
                 _token = token.lower()
                 if _token.isalpha():

@@ -1,4 +1,4 @@
-from .paragraph import Paragraph
+from paragraph import Paragraph
 
 
 class Debate:

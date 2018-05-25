@@ -1,5 +1,5 @@
-from .base import IFeaturesExtractor
 from nltk import sent_tokenize
+from interfaces import IFeaturesExtractor
 
 
 class SpeakingTimeFeaturesExtractor(IFeaturesExtractor):

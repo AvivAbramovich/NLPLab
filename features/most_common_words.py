@@ -1,4 +1,4 @@
-from .tokens import TokensListFeaturesExtractorBase
+from interfaces import TokensListFeaturesExtractorBase
 
 
 class MostCommonWordsFeatureExtractor(TokensListFeaturesExtractorBase):
@@ -26,10 +26,10 @@ class MostCommonWordsFeatureExtractor(TokensListFeaturesExtractorBase):
                 [line.strip().lower() for line in fh.readlines() if '#' not in line],
                 sizes)
 
-    def _extract_features_from_tokens_(self, tokens_lists_generator):
+    def extract_features_from_tokens(self, tokens_lists_list):
         features = [0]*len(self.words_sets)
         count = 0
-        for tokens_list in tokens_lists_generator:
+        for tokens_list in tokens_lists_listw:
             for token in tokens_list:
                 _token = token.lower()
                 if _token.isalpha():

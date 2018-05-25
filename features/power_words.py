@@ -1,4 +1,4 @@
-from .tokens import TokensListFeaturesExtractorBase
+from interfaces import TokensListFeaturesExtractorBase
 
 
 class PowerfulWordsFeaturesExtractor(TokensListFeaturesExtractorBase):
@@ -23,11 +23,11 @@ class PowerfulWordsFeaturesExtractor(TokensListFeaturesExtractorBase):
     def __init__(self, words=None):
         self.__words__ = words if words else self.__default_list__
 
-    def _extract_features_from_tokens_(self, tokens_lists_generator):
+    def extract_features_from_tokens(self, tokens_lists_list):
         powerful_count = 0
         total_count = 0
 
-        for l in tokens_lists_generator:
+        for l in tokens_lists_list:
             for t in l:
                 token = t.lower()
                 if token.isalpha():

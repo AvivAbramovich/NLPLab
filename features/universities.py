@@ -1,4 +1,4 @@
-from .base import IFeaturesExtractor
+from interfaces import IFeaturesExtractor
 
 
 class UniversitiesNamesFeaturesExtractor(IFeaturesExtractor):

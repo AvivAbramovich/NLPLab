@@ -1,5 +1,5 @@
-from .base import IFeaturesExtractor
 from warnings import warn
+from interfaces import IFeaturesExtractor
 
 
 class AudienceReactionsFeaturesExtractor(IFeaturesExtractor):

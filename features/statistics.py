@@ -1,5 +1,5 @@
-from .base import IFeaturesExtractor
 from re import findall
+from interfaces import IFeaturesExtractor
 
 
 class StatisticsFeaturesExtractor(IFeaturesExtractor):

@@ -5,9 +5,9 @@ from time import sleep
 
 from common.debate import Debate
 
-from crawler.results import find_debate_results
-from crawler.transcript import find_transcript
-from crawler.speakers import find_speakers
+from results import find_debate_results
+from transcript import find_transcript
+from speakers import find_speakers
 
 
 def fetch_single_debate(url, driver=None):

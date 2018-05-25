@@ -1,5 +1,5 @@
 from features import *
-from eval.data_digest import DataDigester
+from observers.tournament import TournamentDebatesObserver
 from os.path import join
 from os import listdir
 from schema.parse import parse_file
@@ -23,7 +23,7 @@ if __name__ == '__main__':
     args_parser.add_argument('-nz', action='store_true', help='don\'t zip the debates before extracting features')
     args = args_parser.parse_args()
 
-    digester = DataDigester(
+    observer = TournamentDebatesObserver(
         MostCommonWordsFeatureExtractor.from_file(join('resources', 'wiki-100k.txt'), sizes),
         WordsStatisticsFeaturesExtractor(),
         NotFunctionWordsFeaturesExtractor(),
@@ -42,9 +42,9 @@ if __name__ == '__main__':
         debate = parse_file(join(args.p, debate_filename))
         if not args.nz:
             debate = debate.zip()
-        digester.fit(debate, name=debate_filename)
+        observer.observe(debate, name=debate_filename)
 
-    data, labels = digester.digest()
+    data, labels = observer.digest()
 
     # classifiers
     classifiers = [
@@ -58,4 +58,4 @@ if __name__ == '__main__':
         print('"%s" cross-validation average scores: %.3f' % (cls.__class__.__name__, sum(scores)/len(scores)))
 
     if args.csv:
-        digester.export(args.csv)
+        observer.export(args.csv)
