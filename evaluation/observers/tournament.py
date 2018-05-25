@@ -7,8 +7,9 @@ from nltk import sent_tokenize, word_tokenize
 
 
 class TournamentDebatesObserver(IDebatesObserver):
-    def __init__(self, features_extractors, online_audience_proportion=0.2):
+    def __init__(self, features_extractors, labels_provider, online_audience_proportion=0.2):
         self.__features_extractors__ = features_extractors
+        self.__labels_provider__ = labels_provider
         self.online_audience_proportion = online_audience_proportion
         self.__data__ = []
         self.__labels__ = []
@@ -126,13 +127,8 @@ class TournamentDebatesObserver(IDebatesObserver):
     def __create_label__(self, debate):
         # the changes (in percentages) in for motion (in average between live and online audience)
 
-        change = (self.online_audience_proportion * self.__calc_results_change__(debate.results.online_audience_results)) \
-                 + ((1 - self.online_audience_proportion) * self.__calc_results_change__(debate.results.live_audience_results))
+        change = (self.online_audience_proportion * self.__labels_provider__.provide(debate.results.online_audience_results)) \
+                 + ((1 - self.online_audience_proportion) * self.__labels_provider__.provide(debate.results.live_audience_results))
 
         # NOTE: should be integer number for classifier classes
         return int(change)
-
-    @staticmethod
-    def __calc_results_change__(results):
-        return 100 * (results.after_debate_votes.for_the_motion - results.before_debate_votes.for_the_motion)\
-               / float((results.before_debate_votes.for_the_motion))

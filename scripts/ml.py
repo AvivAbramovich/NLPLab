@@ -1,18 +1,19 @@
-from features import *
-from observers.tournament import TournamentDebatesObserver
-from os.path import join
-from os import listdir
-from schema.parse import parse_file
 from argparse import ArgumentParser
+from os import listdir
+from os.path import join
 
 # cross validation
 from sklearn.model_selection import cross_val_score
-
 # classifiers
 from sklearn.naive_bayes import MultinomialNB
-from sklearn.tree import DecisionTreeClassifier
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.tree import DecisionTreeClassifier
 
+from evaluation.observers.tournament import TournamentDebatesObserver
+from evaluation.labeling.percentages import PercentagesChangeLabelsProvider
+
+from features import *
+from schema.parse import parse_file
 
 sizes = [1000, 10000, 50000]
 
@@ -23,7 +24,7 @@ if __name__ == '__main__':
     args_parser.add_argument('-nz', action='store_true', help='don\'t zip the debates before extracting features')
     args = args_parser.parse_args()
 
-    observer = TournamentDebatesObserver(
+    features_extractors = [
         MostCommonWordsFeatureExtractor.from_file(join('resources', 'wiki-100k.txt'), sizes),
         WordsStatisticsFeaturesExtractor(),
         NotFunctionWordsFeaturesExtractor(),
@@ -33,7 +34,9 @@ if __name__ == '__main__':
         StatisticsFeaturesExtractor(),
         AudienceReactionsFeaturesExtractor(),
         SpeakingTimeFeaturesExtractor()
-    )
+    ]
+
+    observer = TournamentDebatesObserver(features_extractors, PercentagesChangeLabelsProvider())
 
     debate_scripts = [filename for filename in listdir(args.p) if filename.endswith('.xml')]
 
