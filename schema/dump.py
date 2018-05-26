@@ -3,7 +3,7 @@ from xml.etree.cElementTree import Element, SubElement, ElementTree
 
 def dump_debate(debate, path, url=None):
     root = Element('debate')
-    root.set('duration', debate.duration)
+    root.set('duration', str(debate.duration))
     if url:
         root.set('url', url)
 
@@ -22,7 +22,7 @@ def dump_debate(debate, path, url=None):
             bio_element.text = speaker.bio
 
     # results
-    __add_results__(root, debate.debate_results)
+    __add_results__(root, debate.results)
 
     # transcript
     transcript_element = SubElement(root, 'transcript')

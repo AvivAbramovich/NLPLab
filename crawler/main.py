@@ -5,6 +5,7 @@ from time import sleep
 
 from common.debate import Debate
 
+from duration import find_duration
 from results import find_debate_results
 from transcript import find_transcript
 from speakers import find_speakers
@@ -21,6 +22,8 @@ def fetch_single_debate(url, driver=None):
 
     sleep(5)  # wait the page to fully load
 
+    duration = find_duration(driver)
+
     # get the speakers
     speakers = find_speakers(driver)
 
@@ -28,16 +31,20 @@ def fetch_single_debate(url, driver=None):
     results = find_debate_results(driver)
 
     # transcript
-    transcript = find_transcript(driver, speakers)
+    transcript = find_transcript(driver, speakers, duration)
 
     if close:
         driver.close()
-    return Debate(speakers, transcript, results)
+    return Debate(speakers, transcript, results, duration)
 
 
-def find_all_debates():
-    base_url = 'https://www.intelligencesquaredus.org/debates'
-    driver = Chrome()
+def find_all_debates(driver=None, base_url=None):
+    if not base_url:
+        base_url = 'https://www.intelligencesquaredus.org/debates'
+
+    if not driver:
+        driver = Chrome()
+
     driver.get(base_url)
     driver.maximize_window()  # just to be easier to debug
 
