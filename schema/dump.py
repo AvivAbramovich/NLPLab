@@ -3,6 +3,7 @@ from xml.etree.cElementTree import Element, SubElement, ElementTree
 
 def dump_debate(debate, path, url=None):
     root = Element('debate')
+    root.set('duration', debate.duration)
     if url:
         root.set('url', url)
 

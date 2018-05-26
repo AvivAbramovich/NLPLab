@@ -1,4 +1,9 @@
-<debate url="url/to/debate">
+<debate url="url/to/debate" duration="1000">
+    <!--
+    debate properties:
+        url - url to the debate web page
+        duration - the duration of the debate (in seconds)
+    -->
     <speakers>
         <!--
         speaker properties:

@@ -2,19 +2,22 @@ from paragraph import Paragraph
 
 
 class Debate:
-    def __init__(self, speakers, transcript_paragraphs, debate_results):
+    def __init__(self, speakers, transcript_paragraphs, debate_results, duration):
+        """
+        :param speakers: list of common.speakers.Speaker objects
+        :param transcript_paragraphs: list of common.paragraph.Paragraph objects
+        :param debate_results: a common.results.DebateResults object
+        :param duration: the duration of the debate (in seconds)
+        """
         self.speakers = speakers
         self.transcript_paragraphs = transcript_paragraphs
         self.results = debate_results
+        self.duration = duration
 
     def enum_speaker_paragraphs(self, speaker, include_meta=True):
         for p in self.transcript_paragraphs:
             if p.speaker == speaker and (include_meta or not p.is_meta):
                 yield p
-
-    @property
-    def total_time(self):
-        return self.transcript_paragraphs[-1].end_time if len(self.transcript_paragraphs) > 0 else 0
 
     def zip(self):
         """

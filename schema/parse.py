@@ -11,13 +11,19 @@ def parse_string(string):
 
 
 def __parse__(root):
+    duration = __parse_duration__(root)
+
     speakers = __parse_speakers__(root)
 
     results = __parse_results__(root)
 
     transcript = __parse_transcript__(root, speakers)
 
-    return Debate(speakers, transcript, results)
+    return Debate(speakers, transcript, results, duration)
+
+
+def __parse_duration__(root):
+    return int(root.attrib['duration'])
 
 
 def __parse_speakers__(root):
