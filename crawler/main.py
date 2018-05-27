@@ -23,6 +23,10 @@ def fetch_single_debate(url, driver=None):
     sleep(5)  # wait the page to fully load
 
     duration = find_duration(driver)
+    while duration == 0:
+        print('Duration is 0, wait 3 seconds and then check again...')
+        sleep(3)
+        duration = find_duration(driver)
 
     # get the speakers
     speakers = find_speakers(driver)

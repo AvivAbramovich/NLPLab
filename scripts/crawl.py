@@ -2,6 +2,7 @@ from crawler import find_all_debates, fetch_single_debate
 from schema import dump_debate
 from argparse import ArgumentParser
 from os.path import join, exists
+from traceback import print_exc
 
 
 def __fetch_single_debate__(url, dir_path):
@@ -15,6 +16,7 @@ def __fetch_single_debate__(url, dir_path):
         debate = fetch_single_debate(url)
     except Exception as e:
         print('Failed to parse "%s": %s' % (url, e))
+        print_exc()
     else:
         print('Successfully parsed "%s"' % url)
         __dump__(debate, url, path)
