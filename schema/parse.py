@@ -23,7 +23,7 @@ def __parse__(root):
 
 
 def __parse_duration__(root):
-    return int(root.attrib['duration'])
+    return int(root.getroot().attrib['duration'])
 
 
 def __parse_speakers__(root):

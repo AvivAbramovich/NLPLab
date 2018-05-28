@@ -38,4 +38,4 @@ class Debate:
                           paragraph.is_meta)
                 new_paragraphs.append(last_paragraph)
 
-        return Debate(self.speakers, new_paragraphs, self.results)
+        return Debate(self.speakers, new_paragraphs, self.results, self.duration)

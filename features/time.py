@@ -1,18 +1,14 @@
-from nltk import sent_tokenize
 from interfaces import ParagraphsFeaturesExtractorBase
 
 
-class SpeakingTimeFeaturesExtractor(ParagraphsFeaturesExtractorBase):
+class ParagraphsSpeakingTimeFeaturesExtractor(ParagraphsFeaturesExtractorBase):
     def extract_features_from_paragraphs(self, debate, paragraphs_list):
         total_speaking_time = 0
         last_paragraph_time_start = -1
         num_paragraphs = 0
-        num_sentences = 0  # for proportion of num sentences, we need the other speakers num sentences.
-                           # for now, just avg. sentences for p and for time
 
         for p in paragraphs_list:
             num_paragraphs += 1
-            num_sentences += len(sent_tokenize(p.text))
 
             if not p.is_meta and p.start_time != last_paragraph_time_start:
                 total_speaking_time += p.end_time - p.start_time
@@ -22,16 +18,12 @@ class SpeakingTimeFeaturesExtractor(ParagraphsFeaturesExtractorBase):
             return len(self.features_descriptions()) * [0]
 
         return [
-            total_speaking_time / float(debate.total_time),
-            num_paragraphs / float(len(debate.transcript_paragraphs)),
-            num_sentences / float(num_paragraphs),
-            float(debate.total_time) / num_sentences
+            total_speaking_time / float(debate.duration),
+            num_paragraphs / float(len([p for p in debate.transcript_paragraphs if not p.is_meta])),
         ]
 
     def features_descriptions(self):
         return [
             'per. speaking time',
             'per. paragraphs',
-            'avg. sentences for paragraph',
-            'avg. seconds for sentence'
         ]

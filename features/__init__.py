@@ -6,4 +6,4 @@ from .science_related_words import ScienceRelatedPhrasesFeaturesExtractor
 from .universities import UniversitiesNamesFeaturesExtractor
 from .audience import AudienceReactionsFeaturesExtractor
 from .statistics import StatisticsFeaturesExtractor
-from .time import SpeakingTimeFeaturesExtractor
+from .time import ParagraphsSpeakingTimeFeaturesExtractor

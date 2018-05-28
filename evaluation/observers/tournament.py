@@ -7,10 +7,10 @@ from nltk import sent_tokenize, word_tokenize
 
 
 class TournamentDebatesObserver(IDebatesObserver):
-    def __init__(self, features_extractors, labels_provider, online_audience_proportion=0.2):
+    def __init__(self, features_extractors, labeling_system):
+
         self.__features_extractors__ = features_extractors
-        self.__labels_provider__ = labels_provider
-        self.online_audience_proportion = online_audience_proportion
+        self.__labeling_system__ = labeling_system
         self.__data__ = []
         self.__labels__ = []
         self.__names__ = []
@@ -31,7 +31,7 @@ class TournamentDebatesObserver(IDebatesObserver):
     def observe(self, debate, name=None):
         for_motion_fv = []
         against_motion_fv = []
-        label = self.__create_label__(debate)
+        label = self.__labeling_system__.create_label(debate.results)
 
         for speaker in debate.speakers:
             fv = self.__create_features_vector__(debate, speaker)
@@ -80,6 +80,12 @@ class TournamentDebatesObserver(IDebatesObserver):
 
                 try:
                     wr.writerow(row)
+                except UnicodeDecodeError:
+                    for ind, v in enumerate(row):
+                        if type(v) in [str, unicode]:
+                            # remove any not ascii character
+                            row[ind] = ''.join([c for c in v if ord(c) < 128])
+                    wr.writerow(row)
                 except Exception as e:
                     print('Failed to write row %d to csv.\nError: %s\nRow: %s' % (ind, str(e), row))
 
@@ -123,12 +129,3 @@ class TournamentDebatesObserver(IDebatesObserver):
             features_vector += features
 
         return features_vector
-
-    def __create_label__(self, debate):
-        # the changes (in percentages) in for motion (in average between live and online audience)
-
-        change = (self.online_audience_proportion * self.__labels_provider__.provide(debate.results.online_audience_results)) \
-                 + ((1 - self.online_audience_proportion) * self.__labels_provider__.provide(debate.results.live_audience_results))
-
-        # NOTE: should be integer number for classifier classes
-        return int(change)
