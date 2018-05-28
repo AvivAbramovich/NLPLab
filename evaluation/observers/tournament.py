@@ -7,14 +7,16 @@ from nltk import sent_tokenize, word_tokenize
 
 
 class TournamentDebatesObserver(IDebatesObserver):
-    def __init__(self, features_extractors, labeling_system):
+    def __init__(self, features_extractors, labeling_system, alternative_labeling_systems=None):
 
         self.__features_extractors__ = features_extractors
         self.__labeling_system__ = labeling_system
+        self.__alternative_labeling_systems__ = alternative_labeling_systems
         self.__data__ = []
         self.__labels__ = []
         self.__names__ = []
         self.__speakers_names__ = []
+        self.__alternative_labels__ = []
 
         self.__has_paragraphs_features_extractor__ = False
         self.__has_sentences_features_extractor__ = False
@@ -31,7 +33,6 @@ class TournamentDebatesObserver(IDebatesObserver):
     def observe(self, debate, name=None):
         for_motion_fv = []
         against_motion_fv = []
-        label = self.__labeling_system__.create_label(debate.results)
 
         for speaker in debate.speakers:
             fv = self.__create_features_vector__(debate, speaker)
@@ -50,7 +51,9 @@ class TournamentDebatesObserver(IDebatesObserver):
 
         num_records = (len(for_motion_fv) * len(against_motion_fv)) + 1
 
-        self.__labels__ += [label] * num_records
+        self.__labels__ += [self.__create_label__(debate)] * num_records
+        if self.__alternative_labeling_systems__:
+            self.__alternative_labels__ += [self.__create_alternative_labels__(debate)] * num_records
         self.__names__ += [name] * num_records
 
     def digest(self):
@@ -65,9 +68,14 @@ class TournamentDebatesObserver(IDebatesObserver):
             for extractor in self.__features_extractors__:
                 features_headers += extractor.features_descriptions()
 
-            headers = ['debate', 'for motion', 'against motion', 'label'] \
-                      + ['(f) %s' % fh for fh in features_headers] \
-                      + ['(a) %s' % fh for fh in features_headers]
+            headers = ['debate', 'for motion', 'against motion', 'label']
+
+            if self.__alternative_labeling_systems__:
+                for i in range(len(self.__alternative_labeling_systems__)):
+                    headers.append('Alt. label %d' % (i+1))
+
+            headers += ['(f) %s' % fh for fh in features_headers] \
+                       + ['(a) %s' % fh for fh in features_headers]
             wr.writerow(headers)
             del headers
 
@@ -76,7 +84,12 @@ class TournamentDebatesObserver(IDebatesObserver):
 
                 row = [self.__names__[ind],
                        speakers[0], speakers[1],
-                       self.__labels__[ind]] + self.__data__[ind]
+                       self.__labels__[ind]]
+
+                if self.__alternative_labeling_systems__:
+                    row += self.__alternative_labels__[ind]
+
+                row += self.__data__[ind]
 
                 try:
                     wr.writerow(row)
@@ -88,6 +101,12 @@ class TournamentDebatesObserver(IDebatesObserver):
                     wr.writerow(row)
                 except Exception as e:
                     print('Failed to write row %d to csv.\nError: %s\nRow: %s' % (ind, str(e), row))
+
+    def get_alternative_labels(self):
+        """
+        :return: an (n*d) numpy.array where n is the number of records and d is the number of alternative labeling systems
+        """
+        return array(self.__alternative_labels__)
 
     def __create_features_vector__(self, debate, speaker):
         paragraphs = interfaces.ParagraphsFeaturesExtractorBase\
@@ -129,3 +148,9 @@ class TournamentDebatesObserver(IDebatesObserver):
             features_vector += features
 
         return features_vector
+
+    def __create_label__(self, debate):
+        return self.__labeling_system__.create_label(debate.results)
+
+    def __create_alternative_labels__(self, debate):
+        return [ls.create_label(debate.results) for ls in self.__alternative_labeling_systems__]
