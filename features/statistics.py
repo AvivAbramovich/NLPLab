@@ -1,8 +1,8 @@
 from re import findall
-from interfaces import SentencesFeaturesExtractorBase
+from interfaces import ParagraphsFeaturesExtractorBase
 
 
-class StatisticsFeaturesExtractor(SentencesFeaturesExtractorBase):
+class StatisticsFeaturesExtractor(ParagraphsFeaturesExtractorBase):
     __NUMBERS_REGEX__ = '\d+'
     __PERCENTAGES_REGEX__ = '\d+%'
     __phrases__ = [
@@ -15,13 +15,13 @@ class StatisticsFeaturesExtractor(SentencesFeaturesExtractorBase):
         # TODO: add more
     ]
 
-    def extract_features_from_sentences(self, _, sentences_list_list):
+    def extract_features_from_paragraphs(self, debate, paragraphs_list):
         numbers_count = 0
         per_count = 0
         phrases_count = 0
 
-        for p in sentences_list_list:
-            for sentence in p:
+        for paragraph in paragraphs_list:
+            for sentence in paragraph.as_tokens:
                 numbers_count += len(findall(self.__NUMBERS_REGEX__, sentence))
                 per_count += len(findall(self.__PERCENTAGES_REGEX__, sentence))
                 t = sentence.lower()

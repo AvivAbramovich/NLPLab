@@ -1,7 +1,7 @@
-from interfaces import SentencesFeaturesExtractorBase
+from interfaces import ParagraphsFeaturesExtractorBase
 
 
-class UniversitiesNamesFeaturesExtractor(SentencesFeaturesExtractorBase):
+class UniversitiesNamesFeaturesExtractor(ParagraphsFeaturesExtractorBase):
     def __init__(self, words_list):
         """
         :param words_list: a list of the words
@@ -14,10 +14,10 @@ class UniversitiesNamesFeaturesExtractor(SentencesFeaturesExtractorBase):
             return UniversitiesNamesFeaturesExtractor(
                 [line.strip().lower() for line in fh.readlines() if '#' not in line])
 
-    def extract_features_from_sentences(self, _, sentences_list_list):
+    def extract_features_from_paragraphs(self, debate, paragraphs_list):
         count = 0
-        for p in sentences_list_list:
-            for sentence in p:
+        for paragraph in paragraphs_list:
+            for sentence in paragraph.as_tokens:
                 text = sentence.lower()
                 for word in self.__words__:
                     if word in text:

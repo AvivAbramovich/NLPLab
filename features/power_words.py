@@ -1,7 +1,7 @@
-from interfaces import TokensListFeaturesExtractorBase
+from interfaces import ParagraphsFeaturesExtractorBase
 
 
-class PowerfulWordsFeaturesExtractor(TokensListFeaturesExtractorBase):
+class PowerfulWordsFeaturesExtractor(ParagraphsFeaturesExtractorBase):
     __default_list__ = [
         'might',
         'should',
@@ -23,12 +23,12 @@ class PowerfulWordsFeaturesExtractor(TokensListFeaturesExtractorBase):
     def __init__(self, words=None):
         self.__words__ = words if words else self.__default_list__
 
-    def extract_features_from_tokens(self, _, tokens_lists_list):
+    def extract_features_from_paragraphs(self, debate, paragraphs_list):
         powerful_count = 0
         total_count = 0
 
-        for l in tokens_lists_list:
-            for t in l:
+        for paragraph in paragraphs_list:
+            for t in paragraph.as_tokens:
                 token = t.lower()
                 if token.isalpha():
                     total_count += 1

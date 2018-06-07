@@ -1,17 +1,17 @@
 from nltk.corpus import stopwords as __stopwords__
-from interfaces import TokensListFeaturesExtractorBase
+from interfaces import ParagraphsFeaturesExtractorBase
 
 
-class NotFunctionWordsFeaturesExtractor(TokensListFeaturesExtractorBase):
+class NotFunctionWordsFeaturesExtractor(ParagraphsFeaturesExtractorBase):
     def __init__(self, words_to_ignore=None):
         self.__words__ = words_to_ignore if words_to_ignore else __stopwords__.words('english')
 
-    def extract_features_from_tokens(self, _, tokens_lists_list):
+    def extract_features_from_paragraphs(self, debate, paragraphs_list):
         nf_count = 0
         total_count = 0
 
-        for l in tokens_lists_list:
-            for t in l:
+        for paragraph in paragraphs_list:
+            for t in paragraph.as_tokens:
                 token = t.lower()
                 if token.isalpha():
                     total_count += 1
