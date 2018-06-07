@@ -19,7 +19,7 @@ from schema.parse import parse_file
 sizes = [1000, 10000, 50000]
 
 
-def test_on_classifiers(data, labels, cv=10):
+def test_on_classifiers(data, labels, cv=5):
     classifiers = [
         MultinomialNB(),
         DecisionTreeClassifier(),
@@ -34,6 +34,7 @@ def test_on_classifiers(data, labels, cv=10):
 if __name__ == '__main__':
     args_parser = ArgumentParser()
     args_parser.add_argument('-p', help='path to input debate xml files')
+    args_parser.add_argument('--cv', help='number of cross-validations folds. Default=5', default=5, type=int)
     args_parser.add_argument('--csv', help='path to save the features as csv', default=None)
     args_parser.add_argument('-nz', action='store_true', help='don\'t zip the debates before extracting features')
     args = args_parser.parse_args()
@@ -90,11 +91,11 @@ if __name__ == '__main__':
     print('Results base on %d debates:' % len(debate_scripts))
 
     print(main_name + ':')
-    test_on_classifiers(data, labels)
+    test_on_classifiers(data, labels, args.cv)
     for ind in range(len(alternative_ls)):
         _labels = alternative_labels[:,ind]
         print(alternative_ls[ind][1] + ':')
-        test_on_classifiers(data, _labels)
+        test_on_classifiers(data, _labels, args.cv)
 
     if args.csv:
         observer.export(args.csv)
