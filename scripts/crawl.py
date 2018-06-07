@@ -3,6 +3,8 @@ from schema import dump_debate
 from argparse import ArgumentParser
 from os.path import join, exists
 from traceback import print_exc
+from sys import stderr
+from time import sleep
 
 
 def __fetch_single_debate__(url, dir_path):
@@ -15,8 +17,9 @@ def __fetch_single_debate__(url, dir_path):
     try:
         debate = fetch_single_debate(url)
     except Exception as e:
-        print('Failed to parse "%s": %s' % (url, e))
-        print_exc()
+        stderr.write('Failed to parse "%s": %s' % (url, e))
+        # sleep(1)
+        # print_exc()
     else:
         print('Successfully parsed "%s"' % url)
         __dump__(debate, url, path)

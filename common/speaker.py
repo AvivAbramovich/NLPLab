@@ -1,5 +1,5 @@
 class Speaker(object):
-    def __init__(self, name, stand_for, description, bio):
+    def __init__(self, name, stand_for, description=None, bio=None):
         self.name = name
         self.stand_for = stand_for
         self.description = description

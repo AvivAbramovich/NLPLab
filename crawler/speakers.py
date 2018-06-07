@@ -1,4 +1,5 @@
 from common.speaker import Speaker
+from warnings import warn
 
 
 def find_speakers(driver):
@@ -28,7 +29,15 @@ def __parse_speakers__(speakers_div, stand_for=True):
 def __parse_speaker__(speaker_div, stand_for=True):
     speaker_info_div = speaker_div.find_element_by_class_name('speaker-info')
     name = speaker_info_div.find_element_by_tag_name('h3').text
-    description = speaker_info_div.find_element_by_class_name('even').text
-    bio = speaker_div.find_element_by_class_name('bio').text
+    try:
+        description = speaker_info_div.find_element_by_class_name('even').text
+    except:
+        warn('Failed to fetch description for %s' % name)
+        description = None
+    try:
+        bio = speaker_div.find_element_by_class_name('bio').text
+    except:
+        warn('Failed to fetch bio for %s' % name)
+        bio = None
 
     return Speaker(name, stand_for, description, bio)

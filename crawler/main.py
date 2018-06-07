@@ -9,6 +9,7 @@ from duration import find_duration
 from results import find_debate_results
 from transcript import find_transcript
 from speakers import find_speakers
+from warnings import warn
 
 
 def fetch_single_debate(url, driver=None):
@@ -18,28 +19,39 @@ def fetch_single_debate(url, driver=None):
     else:
         close = False
 
-    driver.get(url)
+    try:
+        driver.get(url)
 
-    sleep(5)  # wait the page to fully load
+        sleep(5)  # wait the page to fully load
 
-    duration = find_duration(driver)
-    while duration == 0:
-        print('Duration is 0, wait 3 seconds and then check again...')
-        sleep(3)
-        duration = find_duration(driver)
+        try:
+            duration = find_duration(driver)
+            for i in range(15):
+                print('Duration is 0, wait 3 seconds and then check again...')
+                sleep(3)
+                duration = find_duration(driver)
+                if duration != 0:
+                    break
+            if duration == 0:
+                raise Exception('TimeOut')
+        except Exception as e:
+            warn('Failed to fetch duration to "%s": %s' % (url, e.message))
+            duration = -1
 
-    # get the speakers
-    speakers = find_speakers(driver)
+        # get the speakers
+        speakers = find_speakers(driver)
 
-    # get results
-    results = find_debate_results(driver)
+        # get results
+        results = find_debate_results(driver)
 
-    # transcript
-    transcript = find_transcript(driver, speakers, duration)
+        # transcript
+        transcript = find_transcript(driver, speakers, duration)
 
-    if close:
-        driver.close()
-    return Debate(speakers, transcript, results, duration)
+        return Debate(speakers, transcript, results, duration)
+
+    finally:
+        if close:
+            driver.close()
 
 
 def find_all_debates(driver=None, base_url=None):
@@ -54,7 +66,7 @@ def find_all_debates(driver=None, base_url=None):
 
     years_ul = driver.find_element_by_class_name('years')
     for year_li in years_ul.find_elements_by_class_name('year'):
-        sleep(1)
+        sleep(3)
 
         # check if the pop up appear
         try:
@@ -81,4 +93,5 @@ def find_all_debates(driver=None, base_url=None):
                     debate_link = debate_aside.find_element_by_class_name('field-name-title')\
                         .find_element_by_tag_name('a')\
                         .get_attribute('href')
-                    yield debate_link
+                    if debate_link.split('/')[-1].split('-')[0] != 'unresolved':
+                        yield debate_link

@@ -1,9 +1,9 @@
 from base import IDebatesObserver
-from features import interfaces
+from features.interfaces.paragraphs import ParagraphsFeaturesExtractorBase
 from numpy import array
 import unicodecsv as csv
 import codecs
-from nltk import sent_tokenize, word_tokenize
+from sys import stderr
 
 
 class TournamentDebatesObserver(IDebatesObserver):
@@ -18,21 +18,19 @@ class TournamentDebatesObserver(IDebatesObserver):
         self.__speakers_names__ = []
         self.__alternative_labels__ = []
 
-        self.__has_paragraphs_features_extractor__ = False
-        self.__has_sentences_features_extractor__ = False
-        self.__has_tokens_features_extractor__ = False
-
         for fe in self.__features_extractors__:
-            if isinstance(fe, interfaces.ParagraphsFeaturesExtractorBase):
-                self.__has_paragraphs_features_extractor__ = True
-            elif isinstance(fe, interfaces.SentencesFeaturesExtractorBase):
-                self.__has_sentences_features_extractor__ = True
-            elif isinstance(fe, interfaces.TokensListFeaturesExtractorBase):
-                self.__has_tokens_features_extractor__ = True
+            if not isinstance(fe, ParagraphsFeaturesExtractorBase):
+                raise Exception('%s supports only %s derived features extractors' %
+                                (self.__class__.__name__, ParagraphsFeaturesExtractorBase.__class__.__name__))
 
     def observe(self, debate, name=None):
         for_motion_fv = []
         against_motion_fv = []
+
+        # check if empty debate (crawler failed to parse the debate transcript)
+        if len(debate.transcript_paragraphs) == 0:
+            stderr.write('Debate %s has no transcript.\n' % ('"%s"' % name if name else ''))
+            return
 
         for speaker in debate.speakers:
             fv = self.__create_features_vector__(debate, speaker)
@@ -109,43 +107,19 @@ class TournamentDebatesObserver(IDebatesObserver):
         return array(self.__alternative_labels__)
 
     def __create_features_vector__(self, debate, speaker):
-        paragraphs = interfaces.ParagraphsFeaturesExtractorBase\
-            .split_to_paragraphs(debate, speaker) if self.__has_paragraphs_features_extractor__ else None
-        sentences = interfaces.SentencesFeaturesExtractorBase\
-            .split_to_sentences(debate, speaker) if self.__has_sentences_features_extractor__ else None
-        tokens = interfaces.TokensListFeaturesExtractorBase\
-            .split_to_tokens(debate, speaker) if self.__has_tokens_features_extractor__ else None
+        features_vector = []
+        for features_extractor in self.__features_extractors__:
+            features_vector += features_extractor.extract_features(debate, speaker)
 
-        return self.__create_features_vector_inner_(debate, paragraphs, sentences, tokens)
+        return features_vector
 
     def __create_mutual_features_vector__(self, debate, stand_for):
         paragraphs = [p for p in debate.transcript_paragraphs
                       if p.speaker.stand_for == stand_for]
-        sentences = [sent_tokenize(p.text) for p in paragraphs if not p.is_meta] \
-            if self.__has_sentences_features_extractor__ else None
-        tokens = [word_tokenize(p.text) for p in paragraphs if not p.is_meta] \
-            if self.__has_tokens_features_extractor__ else None
 
-        if not self.__has_paragraphs_features_extractor__:
-            paragraphs = None
-
-        return self.__create_features_vector_inner_(debate, paragraphs, sentences, tokens)
-
-    def __create_features_vector_inner_(self, debate, paragraphs, sentences, tokens):
         features_vector = []
         for features_extractor in self.__features_extractors__:
-            if isinstance(features_extractor, interfaces.ParagraphsFeaturesExtractorBase):
-                features = features_extractor.extract_features_from_paragraphs(debate, paragraphs)
-            elif isinstance(features_extractor, interfaces.SentencesFeaturesExtractorBase):
-                features = features_extractor.extract_features_from_sentences(debate, sentences)
-            elif isinstance(features_extractor, interfaces.TokensListFeaturesExtractorBase):
-                features = features_extractor.extract_features_from_tokens(debate, tokens)
-            else:
-                print('Warning! tournament does not supports FeaturesExtractor that are not Paragraphs,'
-                      ' Sentences or Tokens features extractors')
-                continue
-
-            features_vector += features
+            features_vector += features_extractor.extract_features_from_paragraphs(debate, paragraphs)
 
         return features_vector
 

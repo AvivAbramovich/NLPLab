@@ -87,6 +87,8 @@ if __name__ == '__main__':
     data, labels = observer.digest()
     alternative_labels = observer.get_alternative_labels()
 
+    print('Results base on %d debates:' % len(debate_scripts))
+
     print(main_name + ':')
     test_on_classifiers(data, labels)
     for ind in range(len(alternative_ls)):
