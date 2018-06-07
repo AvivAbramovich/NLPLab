@@ -22,6 +22,9 @@ def find_transcript(driver, speakers, duration):
         for paragraph in paragraphs:
             paragraph.end_time = start_time
 
+        if start_time < 0:
+            raise Exception('Start time is negative')
+
         paragraphs = []
 
         for pg in [pg.strip() for pg in text.split('\n')]:

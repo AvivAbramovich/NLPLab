@@ -33,7 +33,7 @@ class TournamentDebatesObserver(IDebatesObserver):
             return
 
         for speaker in debate.speakers:
-            fv = self.__create_features_vector__(debate, speaker)
+            fv = self.__create_features_vector__(debate, speaker, name)
             (for_motion_fv if speaker.stand_for else against_motion_fv)\
                 .append((speaker.name, fv))
 
@@ -43,8 +43,8 @@ class TournamentDebatesObserver(IDebatesObserver):
                 self.__speakers_names__.append((for_name, against_name))
 
         # fv that treats the speakers in each side as the same person
-        self.__data__.append(self.__create_mutual_features_vector__(debate, True) +
-                             self.__create_mutual_features_vector__(debate, False))
+        self.__data__.append(self.__create_mutual_features_vector__(debate, True, name) +
+                             self.__create_mutual_features_vector__(debate, False, name))
         self.__speakers_names__.append(('All speakers', 'All speakers'))
 
         num_records = (len(for_motion_fv) * len(against_motion_fv)) + 1
@@ -106,20 +106,33 @@ class TournamentDebatesObserver(IDebatesObserver):
         """
         return array(self.__alternative_labels__)
 
-    def __create_features_vector__(self, debate, speaker):
+    def __create_features_vector__(self, debate, speaker, debate_name=None):
         features_vector = []
         for features_extractor in self.__features_extractors__:
-            features_vector += features_extractor.extract_features(debate, speaker)
+            features = features_extractor.extract_features(debate, speaker)
+            # check no negative values
+            if any([value < 0 for value in features]):
+                raise Exception('Feature extractor %s yield negative value(s)%s'
+                                % (features_extractor.__class__.__name__,
+                                   (' in "%s"' % debate_name) if debate_name else ''))
+            features_vector += features
 
         return features_vector
 
-    def __create_mutual_features_vector__(self, debate, stand_for):
+    def __create_mutual_features_vector__(self, debate, stand_for, debate_name=None):
         paragraphs = [p for p in debate.transcript_paragraphs
                       if p.speaker.stand_for == stand_for]
 
         features_vector = []
         for features_extractor in self.__features_extractors__:
-            features_vector += features_extractor.extract_features_from_paragraphs(debate, paragraphs)
+            features = features_extractor.extract_features_from_paragraphs(debate, paragraphs)
+            # check no negative values
+            if any([value < 0 for value in features]):
+                raise Exception('Feature extractor %s yield negative value(s)%s'
+                                % (features_extractor.__class__.__name__,
+                                   (' in "%s"' % debate_name) if debate_name else ''))
+
+            features_vector += features
 
         return features_vector
 
