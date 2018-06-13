@@ -1,4 +1,4 @@
-from interfaces import ParagraphsFeaturesExtractorBase
+from features.interfaces.paragraphs import ParagraphsFeaturesExtractorBase
 
 
 class MostCommonWordsFeatureExtractor(ParagraphsFeaturesExtractorBase):
@@ -21,12 +21,13 @@ class MostCommonWordsFeatureExtractor(ParagraphsFeaturesExtractorBase):
 
     @staticmethod
     def from_file(path, sizes):
-        with open(path) as fh:
+        with open(path, encoding="utf8") as fh:
             return MostCommonWordsFeatureExtractor(
                 [line.strip().lower() for line in fh.readlines() if '#' not in line],
                 sizes)
 
     def extract_features_from_paragraphs(self, debate, paragraphs_list):
+        # type: (object, object) -> object
         features = [0]*len(self.words_sets)
         count = 0
         for paragraph in paragraphs_list:

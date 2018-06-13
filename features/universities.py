@@ -1,4 +1,4 @@
-from interfaces import ParagraphsFeaturesExtractorBase
+from features.interfaces import ParagraphsFeaturesExtractorBase
 
 
 class UniversitiesNamesFeaturesExtractor(ParagraphsFeaturesExtractorBase):

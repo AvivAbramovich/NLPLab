@@ -1,4 +1,4 @@
-from base import ILabelingSystem
+from evaluation.labeling.system.base import ILabelingSystem
 
 
 class PlainLabelingSystem(ILabelingSystem):

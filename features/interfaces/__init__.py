@@ -1,2 +1,2 @@
-from base import IFeaturesExtractor
-from paragraphs import ParagraphsFeaturesExtractorBase
+from features.interfaces.base import IFeaturesExtractor
+from features.interfaces.paragraphs import ParagraphsFeaturesExtractorBase

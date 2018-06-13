@@ -1,7 +1,7 @@
 from collections import defaultdict
 from math import sqrt
 from nltk.corpus import stopwords as __stopwords__
-from interfaces import ParagraphsFeaturesExtractorBase
+from features.interfaces import ParagraphsFeaturesExtractorBase
 
 
 class WordsStatisticsFeaturesExtractor(ParagraphsFeaturesExtractorBase):

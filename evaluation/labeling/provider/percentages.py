@@ -1,4 +1,4 @@
-from base import ILabelProvider
+from evaluation.labeling.provider.base import ILabelProvider
 
 
 class PercentagesChangeLabelsProvider(ILabelProvider):

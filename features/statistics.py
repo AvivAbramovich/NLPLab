@@ -1,5 +1,5 @@
 from re import findall
-from interfaces import ParagraphsFeaturesExtractorBase
+from features.interfaces import ParagraphsFeaturesExtractorBase
 
 
 class StatisticsFeaturesExtractor(ParagraphsFeaturesExtractorBase):

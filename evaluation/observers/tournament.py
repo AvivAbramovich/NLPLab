@@ -1,4 +1,4 @@
-from base import IDebatesObserver
+from evaluation.observers.base import IDebatesObserver
 from features.interfaces.paragraphs import ParagraphsFeaturesExtractorBase
 from numpy import array
 import unicodecsv as csv
@@ -21,7 +21,7 @@ class TournamentDebatesObserver(IDebatesObserver):
         for fe in self.__features_extractors__:
             if not isinstance(fe, ParagraphsFeaturesExtractorBase):
                 raise Exception('%s supports only %s derived features extractors' %
-                                (self.__class__.__name__, ParagraphsFeaturesExtractorBase.__class__.__name__))
+                                (self.__class__.__name__, ParagraphsFeaturesExtractorBase.__cl8ass__.__name__))
 
     def observe(self, debate, name=None):
         for_motion_fv = []

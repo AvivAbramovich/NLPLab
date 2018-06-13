@@ -1,5 +1,5 @@
 from warnings import warn
-from interfaces import ParagraphsFeaturesExtractorBase
+from features.interfaces import ParagraphsFeaturesExtractorBase
 
 
 class AudienceReactionsFeaturesExtractor(ParagraphsFeaturesExtractorBase):

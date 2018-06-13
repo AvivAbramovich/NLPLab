@@ -1,5 +1,5 @@
 from nltk.corpus import stopwords as __stopwords__
-from interfaces import ParagraphsFeaturesExtractorBase
+from features.interfaces import ParagraphsFeaturesExtractorBase
 
 
 class NotFunctionWordsFeaturesExtractor(ParagraphsFeaturesExtractorBase):

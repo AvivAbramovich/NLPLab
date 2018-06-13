@@ -14,6 +14,7 @@ from evaluation.labeling.provider import *
 from evaluation.labeling.system import *
 
 from features import *
+
 from schema.parse import parse_file
 
 sizes = [1000, 10000, 50000]
@@ -48,7 +49,14 @@ if __name__ == '__main__':
         UniversitiesNamesFeaturesExtractor(join('resources', 'universities.txt')),
         StatisticsFeaturesExtractor(),
         AudienceReactionsFeaturesExtractor(),
-        ParagraphsSpeakingTimeFeaturesExtractor()
+        ParagraphsSpeakingTimeFeaturesExtractor(),
+        PersonStatisticsFeaturesExtractor(),
+        PersonalWordsFeaturesExtractor(),
+        QuotesStatisticsFeaturesExtractor(),
+        PosStatisticsFeaturesExtractor(),
+        SentencesStatisticsFeaturesExtractor(),
+        MarksStatisticsFeaturesExtractor(),
+        TalkToTheAudienceFeaturesExtractor()
     ]
 
     main_labeling_system = AverageLabelingSystem(PercentagesChangeLabelsProvider())
@@ -76,6 +84,7 @@ if __name__ == '__main__':
 
     observer = TournamentDebatesObserver(features_extractors, main_labeling_system, [al[0] for al in alternative_ls])
 
+    args.p = 'debates'
     debate_scripts = [filename for filename in listdir(args.p) if filename.endswith('.xml')]
 
     for debate_filename in debate_scripts:

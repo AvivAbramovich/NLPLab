@@ -1,2 +1,2 @@
-from average import AverageLabelingSystem
-from plain import PlainLabelingSystem
+from evaluation.labeling.system.average import AverageLabelingSystem
+from evaluation.labeling.system.plain import PlainLabelingSystem
