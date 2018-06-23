@@ -8,6 +8,9 @@ from sklearn.model_selection import cross_val_score
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.feature_selection import SelectKBest
+from sklearn.feature_selection import chi2
+
 
 from evaluation.observers.tournament import TournamentDebatesObserver
 from evaluation.labeling.provider import *
@@ -18,7 +21,7 @@ from features import *
 from schema.parse import parse_file
 
 sizes = [1000, 10000, 50000]
-
+k_best_sizes = [10, 20, 30, 50]
 
 def test_on_classifiers(data, labels, cv=5):
     classifiers = [
@@ -28,9 +31,23 @@ def test_on_classifiers(data, labels, cv=5):
     ]
 
     for cls in classifiers:
+        print('Test on all features')
         scores = cross_val_score(cls, data, labels, cv=cv)
-        print('"%s" cross-validation average scores: %.3f' % (cls.__class__.__name__, sum(scores) / len(scores)))
+        print('"%s" cross-validation average scores: %.3f\n' % (cls.__class__.__name__, sum(scores) / len(scores)))
 
+        for size in k_best_sizes:
+            print('Test on %f best features', size)
+            new_data, selected_features = SelectKfeatures(data, labels, size)
+            scores = cross_val_score(cls, new_data, labels, cv=cv)
+            print('"%s" cross-validation average scores: %.3f' % (cls.__class__.__name__, sum(scores) / len(scores)))
+            print('the indexes of the selected features are:')
+            print(selected_features)
+
+
+def SelectKfeatures(data, labels, k):
+    kbest = SelectKBest(score_func= chi2, k = k)
+    new_features = kbest.fit_transform(data, labels)
+    return new_features, [i for i in range(len(kbest.get_support())) if kbest.get_support()[i] ==True]
 
 if __name__ == '__main__':
     args_parser = ArgumentParser()
