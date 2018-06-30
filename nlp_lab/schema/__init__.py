@@ -1,0 +1,1 @@
+from nlp_lab.schema.dump import dump_debate

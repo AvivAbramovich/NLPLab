@@ -1,4 +1,4 @@
-from schema.parse import parse_file
+from nlp_lab.schema.parse import parse_file
 from sys import argv
 
 if __name__ == '__main__':

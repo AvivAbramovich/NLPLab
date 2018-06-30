@@ -1,0 +1,2 @@
+from nlp_lab.features.interfaces.base import IFeaturesExtractor
+from nlp_lab.features.interfaces.paragraphs import ParagraphsFeaturesExtractorBase

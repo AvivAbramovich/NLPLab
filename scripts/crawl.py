@@ -1,5 +1,5 @@
-from crawler import find_all_debates, fetch_single_debate
-from schema import dump_debate
+from nlp_lab.crawler import find_all_debates, fetch_single_debate
+from nlp_lab.schema import dump_debate
 from argparse import ArgumentParser
 from os.path import join, exists
 from traceback import print_exc
