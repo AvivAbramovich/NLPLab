@@ -23,6 +23,7 @@ from schema.parse import parse_file
 sizes = [1000, 10000, 50000]
 k_best_sizes = [10, 20, 30, 50]
 
+
 def test_on_classifiers(data, labels, cv=5):
     classifiers = [
         MultinomialNB(),
@@ -37,17 +38,18 @@ def test_on_classifiers(data, labels, cv=5):
 
         for size in k_best_sizes:
             print('Test on %f best features', size)
-            new_data, selected_features = SelectKfeatures(data, labels, size)
+            new_data, selected_features = select_k_features(data, labels, size)
             scores = cross_val_score(cls, new_data, labels, cv=cv)
             print('"%s" cross-validation average scores: %.3f' % (cls.__class__.__name__, sum(scores) / len(scores)))
             print('the indexes of the selected features are:')
             print(selected_features)
 
 
-def SelectKfeatures(data, labels, k):
-    kbest = SelectKBest(score_func= chi2, k = k)
-    new_features = kbest.fit_transform(data, labels)
-    return new_features, [i for i in range(len(kbest.get_support())) if kbest.get_support()[i] ==True]
+def select_k_features(data, labels, k):
+    k_best = SelectKBest(score_func= chi2, k = k)
+    new_features = k_best.fit_transform(data, labels)
+    return new_features, [i for i in range(len(k_best.get_support())) if k_best.get_support()[i] ==True]
+
 
 if __name__ == '__main__':
     args_parser = ArgumentParser()
@@ -104,9 +106,9 @@ if __name__ == '__main__':
     args.p = 'debates'
     debate_scripts = [filename for filename in listdir(args.p) if filename.endswith('.xml')]
 
-    for debate_filename in debate_scripts:
+    for debate_filename in debate_scripts[:10]:
         print('extract features from "%s"' % debate_filename)
-        debate = parse_file(join(args.p, debate_filename))
+        debate = parse_file(join(args.p, debate_filename)).as_ascii()
         if not args.nz:
             debate = debate.zip()
         observer.observe(debate, name=debate_filename)

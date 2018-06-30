@@ -39,3 +39,15 @@ class Debate:
                 new_paragraphs.append(last_paragraph)
 
         return Debate(self.speakers, new_paragraphs, self.results, self.duration)
+
+    def as_ascii(self):
+        """
+        Create a new Debate objects which all paragraphs are ASCII characters only
+        :return: new Debate object
+        """
+
+        return Debate(self.speakers, [
+            Paragraph(p.speaker, ''.join([c for c in p.text if ord(c) < 256]),
+                      p.start_time, p.end_time, p.is_meta)
+            for p in self.transcript_paragraphs
+        ], self.results, self.duration)
