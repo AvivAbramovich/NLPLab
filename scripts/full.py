@@ -81,7 +81,7 @@ if __name__ == '__main__':
         ParagraphsSpeakingTimeFeaturesExtractor(),
         # PosStatisticsFeaturesExtractor(),
         # PersonStatisticsFeaturesExtractor(),
-        # PersonalWordsFeaturesExtractor(),
+        PersonalWordsFeaturesExtractor(),
         QuotesStatisticsFeaturesExtractor(),
         SentencesStatisticsFeaturesExtractor(),
         MarksStatisticsFeaturesExtractor(),
