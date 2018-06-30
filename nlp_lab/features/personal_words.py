@@ -23,13 +23,10 @@ class PersonalWordsFeaturesExtractor(ParagraphsFeaturesExtractorBase):
         total_sentences = 0
 
         for paragraph in paragraphs_list:
-            for tokens in paragraph.as_sentences:
+            for sentence_as_pos_tokens in self.__paragraph_to_pos_tag_sentences_tokens__(paragraph):
                 total_sentences +=1
-                pos_tagger = pos_tag(tokens)
-                for token in pos_tagger:
-                    token_word = token[0].lower()
-                    if token[0].isalpha():
-                        if token_word in self.__words__ or token[1] == 'VBD' or token[1] == 'VBN':
+                for token, tag in sentence_as_pos_tokens:
+                    if token.isalpha() and (token.lower() in self.__words__ or tag in ['VBD', 'VBN']):
                             personal_count_sentences += 1
                             break
 
@@ -41,6 +38,15 @@ class PersonalWordsFeaturesExtractor(ParagraphsFeaturesExtractorBase):
     def features_descriptions(self):
         return ['num. of personal experiences sentences phrases',
                 'percent of personal experiences sentences to all sentences']
+
+    def __paragraph_to_pos_tag_sentences_tokens__(self, paragraph):
+        sentences = [[]]
+        for t in pos_tag(paragraph.as_tokens):
+            if t[1] == '.':
+                sentences.append([])
+            else:
+                sentences[-1].append(t)
+        return sentences
 
 
 
