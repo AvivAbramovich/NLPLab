@@ -24,25 +24,32 @@ sizes = [1000, 10000, 50000]
 k_best_sizes = [10, 20, 30, 50]
 
 
-def test_on_classifiers(data, labels, cv=5):
+def test_on_classifiers(data, labels, cv=5, name=None, tabs=0):
     classifiers = [
         MultinomialNB(),
         DecisionTreeClassifier(),
         KNeighborsClassifier()
     ]
 
+    if name:
+        print(name + ':')
+
+    prefix = '\t' * tabs
+
     for cls in classifiers:
-        print('Test on all features')
+        print(prefix + cls.__class__.__name__)
+        print(prefix + '\tTest on all features')
         scores = cross_val_score(cls, data, labels, cv=cv)
-        print('"%s" cross-validation average scores: %.3f\n' % (cls.__class__.__name__, sum(scores) / len(scores)))
+        print(prefix + '\t\tcross-validation average scores: %.3f\n' % (sum(scores) / len(scores)))
 
         for size in k_best_sizes:
-            print('Test on %f best features' % size)
+            print(prefix + '\tTest on %d best features' % size)
             new_data, selected_features = select_k_features(data, labels, size)
             scores = cross_val_score(cls, new_data, labels, cv=cv)
-            print('"%s" cross-validation average scores: %.3f' % (cls.__class__.__name__, sum(scores) / len(scores)))
-            print('the indexes of the selected features are:')
-            print(selected_features)
+            print(prefix + '\t\tcross-validation average scores: %.3f' % (sum(scores) / len(scores)))
+            print(prefix + '\t\tthe indexes of the selected features are:')
+            print(prefix + '\t\t' + str(selected_features))
+            print('')  # line separation between sizes
 
 
 def select_k_features(data, labels, k):
@@ -57,6 +64,7 @@ if __name__ == '__main__':
     args_parser.add_argument('--cv', help='number of cross-validations folds. Default=5', default=5, type=int)
     args_parser.add_argument('--csv', help='path to save the features as csv', default=None)
     args_parser.add_argument('-nz', action='store_true', help='don\'t zip the debates before extracting features')
+    args_parser.add_argument('--limit', help='take only the first N debates', type=int, default=None)
     args = args_parser.parse_args()
 
     features_extractors = [
@@ -106,24 +114,31 @@ if __name__ == '__main__':
     args.p = 'debates'
     debate_scripts = [filename for filename in listdir(args.p) if filename.endswith('.xml')]
 
-    for debate_filename in debate_scripts[:3]:
+    if args.limit:
+        debate_scripts = debate_scripts[:args.limit]
+    for debate_filename in debate_scripts:
         print('extract features from "%s"' % debate_filename)
         debate = parse_file(join(args.p, debate_filename)).as_ascii()
         if not args.nz:
             debate = debate.zip()
         observer.observe(debate, name=debate_filename)
 
+    time_stats = observer.get_average_extractor_time()
+    # to list, order by time
+    time_stats = list(time_stats.items())
+    time_stats.sort(key=lambda t:t[1], reverse=True)
+    for tup in time_stats:
+        print('%s took %.4f' % tup)
+
     data, labels = observer.digest()
     alternative_labels = observer.get_alternative_labels()
 
     print('Results base on %d debates:' % len(debate_scripts))
 
-    print(main_name + ':')
-    test_on_classifiers(data, labels, args.cv)
+    test_on_classifiers(data, labels, args.cv, name=main_name, tabs=1)
     for ind in range(len(alternative_ls)):
         _labels = alternative_labels[:,ind]
-        print(alternative_ls[ind][1] + ':')
-        test_on_classifiers(data, _labels, args.cv)
+        test_on_classifiers(data, _labels, args.cv, name=alternative_ls[ind][1], tabs=1)
 
     if args.csv:
         observer.export(args.csv)

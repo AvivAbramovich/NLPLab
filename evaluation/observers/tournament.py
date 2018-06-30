@@ -1,6 +1,8 @@
 from evaluation.observers.base import IDebatesObserver
 from features.interfaces.paragraphs import ParagraphsFeaturesExtractorBase
 from numpy import array
+from time import time
+from collections import defaultdict
 import unicodecsv as csv
 import codecs
 from sys import stderr
@@ -17,6 +19,7 @@ class TournamentDebatesObserver(IDebatesObserver):
         self.__names__ = []
         self.__speakers_names__ = []
         self.__alternative_labels__ = []
+        self.__time_statistics__ = defaultdict(list)
 
         for fe in self.__features_extractors__:
             if not isinstance(fe, ParagraphsFeaturesExtractorBase):
@@ -32,10 +35,14 @@ class TournamentDebatesObserver(IDebatesObserver):
             stderr.write('Debate %s has no transcript.\n' % ('"%s"' % name if name else ''))
             return
 
+        time_stats = defaultdict(list)
+
         for speaker in debate.speakers:
-            fv = self.__create_features_vector__(debate, speaker, name)
+            fv, stats = self.__create_features_vector__(debate, speaker, name)
             (for_motion_fv if speaker.stand_for else against_motion_fv)\
                 .append((speaker.name, fv))
+            for name, t in stats.items():
+                time_stats[name].append(t)
 
         for for_name, for_fv in for_motion_fv:
             for against_name, against_fv in against_motion_fv:
@@ -43,8 +50,14 @@ class TournamentDebatesObserver(IDebatesObserver):
                 self.__speakers_names__.append((for_name, against_name))
 
         # fv that treats the speakers in each side as the same person
-        self.__data__.append(self.__create_mutual_features_vector__(debate, True, name) +
-                             self.__create_mutual_features_vector__(debate, False, name))
+        for_values, for_stats = self.__create_mutual_features_vector__(debate, True, name)
+        against_values, against_stats = self.__create_mutual_features_vector__(debate, False, name)
+
+        self.__data__.append(for_values + against_values)
+        for d in [for_stats, against_stats]:
+            for name, t in d.items():
+                time_stats[name].append(t)
+
         self.__speakers_names__.append(('All speakers', 'All speakers'))
 
         num_records = (len(for_motion_fv) * len(against_motion_fv)) + 1
@@ -53,6 +66,8 @@ class TournamentDebatesObserver(IDebatesObserver):
         if self.__alternative_labeling_systems__:
             self.__alternative_labels__ += [self.__create_alternative_labels__(debate)] * num_records
         self.__names__ += [name] * num_records
+
+        return {n:(sum(tl)/float(len(tl))) for n,tl in time_stats.items()}
 
     def digest(self):
         return array(self.__data__), array(self.__labels__)
@@ -106,10 +121,20 @@ class TournamentDebatesObserver(IDebatesObserver):
         """
         return array(self.__alternative_labels__)
 
+    def get_average_extractor_time(self):
+        return {
+            n:(sum(tl)/float(len(tl))) for n,tl in self.__time_statistics__.items()
+        }
+
     def __create_features_vector__(self, debate, speaker, debate_name=None):
         features_vector = []
+        time_stats = {}
         for features_extractor in self.__features_extractors__:
+            start = time()
             features = features_extractor.extract_features(debate, speaker)
+            t = time() - start
+            time_stats[features_extractor.__class__.__name__] = t
+            self.__time_statistics__[features_extractor.__class__.__name__].append(t)
             # check no negative values
             if any([value < 0 for value in features]):
                 raise Exception('Feature extractor %s yield negative value(s)%s'
@@ -117,15 +142,20 @@ class TournamentDebatesObserver(IDebatesObserver):
                                    (' in "%s"' % debate_name) if debate_name else ''))
             features_vector += features
 
-        return features_vector
+        return features_vector, time_stats
 
     def __create_mutual_features_vector__(self, debate, stand_for, debate_name=None):
         paragraphs = [p for p in debate.transcript_paragraphs
                       if p.speaker.stand_for == stand_for]
 
         features_vector = []
+        time_stats = {}
         for features_extractor in self.__features_extractors__:
+            start = time()
             features = features_extractor.extract_features_from_paragraphs(debate, paragraphs)
+            t = time() - start
+            time_stats[features_extractor.__class__.__name__] = t
+            self.__time_statistics__[features_extractor.__class__.__name__].append(t)
             # check no negative values
             if any([value < 0 for value in features]):
                 raise Exception('Feature extractor %s yield negative value(s)%s'
@@ -134,7 +164,7 @@ class TournamentDebatesObserver(IDebatesObserver):
 
             features_vector += features
 
-        return features_vector
+        return features_vector, time_stats
 
     def __create_label__(self, debate):
         return self.__labeling_system__.create_label(debate.results)
