@@ -81,7 +81,7 @@ class TournamentDebatesObserver(IDebatesObserver):
 
     def get_features_descriptions(self):
         for fe in self.__features_extractors__:
-            for desc in fe.features_descriptions:
+            for desc in fe.features_descriptions():
                 yield desc
 
     def get_alternative_labels(self):
