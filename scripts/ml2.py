@@ -37,7 +37,7 @@ def test_on_classifiers(data, labels, cv=5):
         print('"%s" cross-validation average scores: %.3f\n' % (cls.__class__.__name__, sum(scores) / len(scores)))
 
         for size in k_best_sizes:
-            print('Test on %f best features', size)
+            print('Test on %f best features' % size)
             new_data, selected_features = select_k_features(data, labels, size)
             scores = cross_val_score(cls, new_data, labels, cv=cv)
             print('"%s" cross-validation average scores: %.3f' % (cls.__class__.__name__, sum(scores) / len(scores)))
@@ -46,9 +46,9 @@ def test_on_classifiers(data, labels, cv=5):
 
 
 def select_k_features(data, labels, k):
-    k_best = SelectKBest(score_func= chi2, k = k)
+    k_best = SelectKBest(score_func=chi2, k=k)
     new_features = k_best.fit_transform(data, labels)
-    return new_features, [i for i in range(len(k_best.get_support())) if k_best.get_support()[i] ==True]
+    return new_features, [i for i, v in enumerate(k_best.get_support()) if v]
 
 
 if __name__ == '__main__':
@@ -106,7 +106,7 @@ if __name__ == '__main__':
     args.p = 'debates'
     debate_scripts = [filename for filename in listdir(args.p) if filename.endswith('.xml')]
 
-    for debate_filename in debate_scripts[:10]:
+    for debate_filename in debate_scripts[:3]:
         print('extract features from "%s"' % debate_filename)
         debate = parse_file(join(args.p, debate_filename)).as_ascii()
         if not args.nz:
