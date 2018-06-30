@@ -1,6 +1,7 @@
-from threading import Thread, Lock
+from threading import Thread
 from time import sleep
 from abc import ABCMeta, abstractmethod
+from locker import Locker
 
 
 class QueueIsFullError(Exception):
@@ -13,17 +14,6 @@ class QueueIsFullError(Exception):
 
     def __str__(self):
         return self.message
-
-
-class Locker:
-    def __init__(self):
-        self.lock = Lock()
-
-    def __enter__(self):
-        self.lock.acquire()
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        self.lock.release()
 
 
 class JobsExecutorBase:

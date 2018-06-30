@@ -6,6 +6,7 @@ from collections import defaultdict
 import unicodecsv as csv
 import codecs
 from sys import stderr
+from nlp_lab.extra.locker import Locker
 
 
 class TournamentDebatesObserver(IDebatesObserver):
@@ -20,6 +21,7 @@ class TournamentDebatesObserver(IDebatesObserver):
         self.__speakers_names__ = []
         self.__alternative_labels__ = []
         self.__time_statistics__ = defaultdict(list)
+        self.__locker__ = Locker()
 
         for fe in self.__features_extractors__:
             if not isinstance(fe, ParagraphsFeaturesExtractorBase):
@@ -27,47 +29,8 @@ class TournamentDebatesObserver(IDebatesObserver):
                                 (self.__class__.__name__, ParagraphsFeaturesExtractorBase.__class__.__name__))
 
     def observe(self, debate, name=None):
-        for_motion_fv = []
-        against_motion_fv = []
-
-        # check if empty debate (crawler failed to parse the debate transcript)
-        if len(debate.transcript_paragraphs) == 0:
-            stderr.write('Debate %s has no transcript.\n' % ('"%s"' % name if name else ''))
-            return
-
-        time_stats = defaultdict(list)
-
-        for speaker in debate.speakers:
-            fv, stats = self.__create_features_vector__(debate, speaker, name)
-            (for_motion_fv if speaker.stand_for else against_motion_fv)\
-                .append((speaker.name, fv))
-            for name, t in stats.items():
-                time_stats[name].append(t)
-
-        for for_name, for_fv in for_motion_fv:
-            for against_name, against_fv in against_motion_fv:
-                self.__data__.append(for_fv + against_fv)
-                self.__speakers_names__.append((for_name, against_name))
-
-        # fv that treats the speakers in each side as the same person
-        for_values, for_stats = self.__create_mutual_features_vector__(debate, True, name)
-        against_values, against_stats = self.__create_mutual_features_vector__(debate, False, name)
-
-        self.__data__.append(for_values + against_values)
-        for d in [for_stats, against_stats]:
-            for name, t in d.items():
-                time_stats[name].append(t)
-
-        self.__speakers_names__.append(('All speakers', 'All speakers'))
-
-        num_records = (len(for_motion_fv) * len(against_motion_fv)) + 1
-
-        self.__labels__ += [self.__create_label__(debate)] * num_records
-        if self.__alternative_labeling_systems__:
-            self.__alternative_labels__ += [self.__create_alternative_labels__(debate)] * num_records
-        self.__names__ += [name] * num_records
-
-        # return {n:(sum(tl)/float(len(tl))) for n,tl in time_stats.items()}
+        res = self.__observe_job__(debate, name)
+        self.__on_finish_debate__((debate, name), res)
         return True
 
     def digest(self):
@@ -118,7 +81,7 @@ class TournamentDebatesObserver(IDebatesObserver):
 
     def get_features_descriptions(self):
         for fe in self.__features_extractors__:
-            for desc in fe.features_descriptions():
+            for desc in fe.features_descriptions:
                 yield desc
 
     def get_alternative_labels(self):
@@ -126,6 +89,72 @@ class TournamentDebatesObserver(IDebatesObserver):
         :return: an (n*d) numpy.array where n is the number of records and d is the number of alternative labeling systems
         """
         return array(self.__alternative_labels__)
+
+    def __observe_job__(self, debate, debate_name):
+        # return properties
+        data = []
+        speakers_names = []
+        time_stats = defaultdict(list)
+        labels = []
+        alt_labels = []
+        names = []
+
+        for_motion_fv = []
+        against_motion_fv = []
+
+        # check if empty debate (crawler failed to parse the debate transcript)
+        if len(debate.transcript_paragraphs) == 0:
+            stderr.write('Debate %s has no transcript.\n' % ('"%s"' % debate_name if debate_name else ''))
+            return
+
+        for speaker in debate.speakers:
+            # debug
+            # print('%s: create fv for %s' % (debate_name, speaker.name))
+            #debug end
+            fv, stats = self.__create_features_vector__(debate, speaker, debate_name)
+            (for_motion_fv if speaker.stand_for else against_motion_fv) \
+                .append((speaker.name, fv))
+            for fv_name, t in stats.items():
+                time_stats[fv_name].append(t)
+
+        for for_name, for_fv in for_motion_fv:
+            for against_name, against_fv in against_motion_fv:
+                data.append(for_fv + against_fv)
+                speakers_names.append((for_name, against_name))
+
+        # fv that treats the speakers in each side as the same person
+        for_values, for_stats = self.__create_mutual_features_vector__(debate, True, debate_name)
+        against_values, against_stats = self.__create_mutual_features_vector__(debate, False, debate_name)
+
+        data.append(for_values + against_values)
+        for d in [for_stats, against_stats]:
+            for fv_name, t in d.items():
+                time_stats[fv_name].append(t)
+
+        speakers_names.append(('All speakers', 'All speakers'))
+
+        num_records = (len(for_motion_fv) * len(against_motion_fv)) + 1
+
+        labels += [self.__create_label__(debate)] * num_records
+        if self.__alternative_labeling_systems__:
+            alt_labels += [self.__create_alternative_labels__(debate)] * num_records
+        names += [debate_name] * num_records
+
+        return data, speakers_names, time_stats, labels, alt_labels, names
+
+    def __on_finish_debate__(self, args, res):
+        # update the relevant properties
+        with self.__locker__:
+            # print('Finished "%s"' % args[1])
+            data, speakers_names, time_stats, labels, alt_labels, names = res
+            self.__data__ += data
+            self.__speakers_names__ += speakers_names
+            self.__labels__ += labels
+            self.__alternative_labels__ += alt_labels
+            self.__names__ += names
+
+            for k, v in time_stats.items():
+                self.__time_statistics__[k] += v
 
     def get_average_extractor_time(self):
         return {
@@ -140,7 +169,7 @@ class TournamentDebatesObserver(IDebatesObserver):
             features = features_extractor.extract_features(debate, speaker)
             t = time() - start
             time_stats[features_extractor.__class__.__name__] = t
-            self.__time_statistics__[features_extractor.__class__.__name__].append(t)
+
             # check no negative values
             if any([value < 0 for value in features]):
                 raise Exception('Feature extractor %s yield negative value(s)%s'
@@ -161,7 +190,7 @@ class TournamentDebatesObserver(IDebatesObserver):
             features = features_extractor.extract_features_from_paragraphs(debate, paragraphs)
             t = time() - start
             time_stats[features_extractor.__class__.__name__] = t
-            self.__time_statistics__[features_extractor.__class__.__name__].append(t)
+
             # check no negative values
             if any([value < 0 for value in features]):
                 raise Exception('Feature extractor %s yield negative value(s)%s'

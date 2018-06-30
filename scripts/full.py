@@ -70,7 +70,7 @@ if __name__ == '__main__':
     args = args_parser.parse_args()
 
     features_extractors = [
-        # MostCommonWordsFeatureExtractor.from_file(join('resources', 'wiki-100k.txt'), sizes),
+        MostCommonWordsFeatureExtractor.from_file(join('resources', 'wiki-100k.txt'), sizes),
         WordsStatisticsFeaturesExtractor(),
         NotFunctionWordsFeaturesExtractor(),
         PowerfulWordsFeaturesExtractor(),
@@ -79,10 +79,10 @@ if __name__ == '__main__':
         StatisticsFeaturesExtractor(),
         AudienceReactionsFeaturesExtractor(),
         ParagraphsSpeakingTimeFeaturesExtractor(),
-        PersonStatisticsFeaturesExtractor(),
-        PersonalWordsFeaturesExtractor(),
+        # PosStatisticsFeaturesExtractor(),
+        # PersonStatisticsFeaturesExtractor(),
+        # PersonalWordsFeaturesExtractor(),
         QuotesStatisticsFeaturesExtractor(),
-        PosStatisticsFeaturesExtractor(),
         SentencesStatisticsFeaturesExtractor(),
         MarksStatisticsFeaturesExtractor(),
         TalkToTheAudienceFeaturesExtractor()
