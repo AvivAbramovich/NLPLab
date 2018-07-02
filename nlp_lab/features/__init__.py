@@ -6,7 +6,7 @@ from nlp_lab.features.science_related_words import ScienceRelatedPhrasesFeatures
 from nlp_lab.features.universities import UniversitiesNamesFeaturesExtractor
 from nlp_lab.features.audience import AudienceReactionsFeaturesExtractor
 from nlp_lab.features.statistics import StatisticsFeaturesExtractor
-from nlp_lab.features.time import ParagraphsSpeakingTimeFeaturesExtractor
+from nlp_lab.features.speaking_time import ParagraphsSpeakingTimeFeaturesExtractor
 from nlp_lab.features.person_tagger import PersonStatisticsFeaturesExtractor
 from nlp_lab.features.personal_words import PersonalWordsFeaturesExtractor
 from nlp_lab.features.pos_statistics import PosStatisticsFeaturesExtractor

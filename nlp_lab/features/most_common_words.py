@@ -14,7 +14,7 @@ class MostCommonWordsFeatureExtractor(ParagraphsFeaturesExtractorBase):
         current_list = words_list
         for ind, size in enumerate(sizes):
             cur_size = size - (sizes[ind-1] if ind else 0)
-            self.words_sets.append(current_list[:cur_size])
+            self.words_sets.append(set(current_list[:cur_size]))
             current_list = current_list[cur_size:]
 
         if current_list:

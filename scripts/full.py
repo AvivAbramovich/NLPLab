@@ -1,6 +1,7 @@
 from argparse import ArgumentParser
 from os import listdir
 from os.path import join
+from time import time
 
 # cross validation
 from sklearn.model_selection import cross_val_score
@@ -44,13 +45,14 @@ def test_on_classifiers(data, labels, cv=5, name=None, tabs=0):
         print(prefix + '\t\tcross-validation average scores: %.3f\n' % (sum(scores) / len(scores)))
 
         for size in k_best_sizes:
-            print(prefix + '\tTest on %d best features' % size)
-            new_data, selected_features = select_k_features(data, labels, size)
-            scores = cross_val_score(cls, new_data, labels, cv=cv)
-            print(prefix + '\t\tcross-validation average scores: %.3f' % (sum(scores) / len(scores)))
-            print(prefix + '\t\tthe indexes of the selected features are:')
-            print(prefix + '\t\t' + str(selected_features))
-            print('')  # line separation between sizes
+            if size < data.shape[1]:
+                print(prefix + '\tTest on %d best features' % size)
+                new_data, selected_features = select_k_features(data, labels, size)
+                scores = cross_val_score(cls, new_data, labels, cv=cv)
+                print(prefix + '\t\tcross-validation average scores: %.3f' % (sum(scores) / len(scores)))
+                print(prefix + '\t\tthe indexes of the selected features are:')
+                print(prefix + '\t\t' + str(selected_features))
+                print('')  # line separation between sizes
 
 
 def select_k_features(data, labels, k):
@@ -67,6 +69,7 @@ if __name__ == '__main__':
     args_parser.add_argument('-nz', action='store_true', help='don\'t zip the debates before extracting features')
     args_parser.add_argument('--limit', help='take only the first N debates', type=int, default=None)
     args_parser.add_argument('--async', action='store_true', help='Process the debates async')
+    args_parser.add_argument('--debug', action='store_true', help='Add debug printing')
     args = args_parser.parse_args()
 
     features_extractors = [
@@ -112,7 +115,7 @@ if __name__ == '__main__':
         ]
 
     observer_cls = TournamentDebatesAsyncObserver if args.async else TournamentDebatesObserver
-    observer = observer_cls(features_extractors, main_labeling_system, [al[0] for al in alternative_ls])
+    observer = observer_cls(features_extractors, main_labeling_system, [al[0] for al in alternative_ls], debug_print=args.debug)
 
     args.p = 'debates'
     debate_scripts = [filename for filename in listdir(args.p) if filename.endswith('.xml')]
@@ -120,6 +123,7 @@ if __name__ == '__main__':
     if args.limit:
         debate_scripts = debate_scripts[:args.limit]
 
+    start = time()
     for debate_filename in debate_scripts:
         debate = parse_file(join(args.p, debate_filename)).as_ascii()
 
@@ -137,6 +141,14 @@ if __name__ == '__main__':
     data, labels = observer.digest()
     alternative_labels = observer.get_alternative_labels()
 
+    total_time = time() - start
+    print('')
+    print('Total features extraction time: %d seconds' % total_time)
+    print('Total records: %d' % len(labels))
+
+    if args.csv:
+        observer.export(args.csv)
+
     print('Results base on %d debates:' % len(debate_scripts))
 
     test_on_classifiers(data, labels, args.cv, name=main_name, tabs=1)
@@ -144,7 +156,7 @@ if __name__ == '__main__':
         _labels = alternative_labels[:,ind]
         test_on_classifiers(data, _labels, args.cv, name=alternative_ls[ind][1], tabs=1)
 
-    print('Features extractors average time:')
+    print('Features extractors average time (per record):')
     time_stats = observer.get_average_extractor_time()
     # to list, order by time
     time_stats = list(time_stats.items())
@@ -155,6 +167,3 @@ if __name__ == '__main__':
     print('Features descriptions:')
     for t in enumerate(observer.get_features_descriptions()):
         print('%d: %s' % t)
-
-    if args.csv:
-        observer.export(args.csv)

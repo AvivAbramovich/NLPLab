@@ -10,7 +10,7 @@ from nlp_lab.extra.locker import Locker
 
 
 class TournamentDebatesObserver(IDebatesObserver):
-    def __init__(self, features_extractors, labeling_system, alternative_labeling_systems=None):
+    def __init__(self, features_extractors, labeling_system, alternative_labeling_systems=None, debug_print=False):
 
         self.__features_extractors__ = features_extractors
         self.__labeling_system__ = labeling_system
@@ -22,6 +22,8 @@ class TournamentDebatesObserver(IDebatesObserver):
         self.__alternative_labels__ = []
         self.__time_statistics__ = defaultdict(list)
         self.__locker__ = Locker()
+        self._debug_print_ = debug_print
+        self.__print_locker__ = Locker()
 
         for fe in self.__features_extractors__:
             if not isinstance(fe, ParagraphsFeaturesExtractorBase):
@@ -104,8 +106,13 @@ class TournamentDebatesObserver(IDebatesObserver):
 
         # check if empty debate (crawler failed to parse the debate transcript)
         if len(debate.transcript_paragraphs) == 0:
-            stderr.write('Debate %s has no transcript.\n' % ('"%s"' % debate_name if debate_name else ''))
+            with self.__print_locker__:
+                stderr.write('Debate %s has no transcript.\n' % ('"%s"' % debate_name if debate_name else ''))
             return
+
+        if self._debug_print_:
+            with self.__print_locker__:
+                print('Start %s' % debate_name)
 
         for speaker in debate.speakers:
             # debug
@@ -145,7 +152,9 @@ class TournamentDebatesObserver(IDebatesObserver):
     def __on_finish_debate__(self, args, res):
         # update the relevant properties
         with self.__locker__:
-            # print('Finished "%s"' % args[1])
+            if self._debug_print_:
+                with self.__print_locker__:
+                    print('Finished "%s"' % args[1])
             data, speakers_names, time_stats, labels, alt_labels, names = res
             self.__data__ += data
             self.__speakers_names__ += speakers_names

@@ -101,8 +101,6 @@ class JobsExecutorBase:
             self.manager = manager
 
         def run(self):
-            result = None
-            exception = None
             while True:
                 with self.manager.lock:
                     if len(self.manager.waiting_queue) > 0:
@@ -120,18 +118,13 @@ class JobsExecutorBase:
                     try:
                         result = job(*args)
                     except Exception as e:
-                        exception = e
-
-                    with self.manager.lock:
-                        self.manager.working.pop(_id)
-
-                    if result:
-                        self.manager.on_job_finished(_id, job, args, desc, result)
+                        self.manager.on_job_failed(_id, job, args, desc, e)
                     else:
-                        self.manager.on_job_failed(_id, job, args, desc, exception)
+                        self.manager.on_job_finished(_id, job, args, desc, result)
+                    finally:
+                        with self.manager.lock:
+                            self.manager.working.pop(_id)
 
-                    result = None
-                    exception = None
                 else:
                     if self.manager.should_terminate:
                         return

@@ -4,24 +4,25 @@ from random import randint
 from nlp_lab.extra.jobs_executor import JobsExecutorBase, QueueIsFullError
 
 
-class JobExecutor(JobsExecutorBase):
-    def __init__(self, num_threads, on_success_method, sleeping_time_in_seconds=3, queue_limit=500):
-        super(JobExecutor, self).__init__(num_threads, sleeping_time_in_seconds, queue_limit)
-        self.__on_success_method = on_success_method
-
-    def generate_id(self):
-        start_index = randint(0, 15)
-        return str(uuid1()).replace('-', '')[start_index:start_index+10]
-
-    def on_job_finished(self, _id, job, args, description, result):
-        self.__on_success_method(args, result)
-
-
 class TournamentDebatesAsyncObserver(TournamentDebatesObserver):
-    def __init__(self, features_extractors, labeling_system, alternative_labeling_systems=None):
-        super(TournamentDebatesAsyncObserver, self).__init__(features_extractors, labeling_system, alternative_labeling_systems)
+    class __JobExecutor__(JobsExecutorBase):
+        def __init__(self, delegate, num_threads, sleeping_time_in_seconds=1, queue_limit=500, debug_print=False):
+            super(TournamentDebatesAsyncObserver.__JobExecutor__, self)\
+                .__init__(num_threads, sleeping_time_in_seconds, queue_limit)
+            self.__delegate__ = delegate
 
-        self.__jobs_executor__ = JobExecutor(10, self.__on_finish_debate__)
+        def generate_id(self):
+            start_index = randint(0, 15)
+            return str(uuid1()).replace('-', '')[start_index:start_index + 10]
+
+        def on_job_finished(self, _id, job, args, description, result):
+            self.__delegate__.__on_finish_debate__(args, result)
+
+    def __init__(self, features_extractors, labeling_system, alternative_labeling_systems=None, debug_print=False):
+        super(TournamentDebatesAsyncObserver, self)\
+            .__init__(features_extractors, labeling_system, alternative_labeling_systems, debug_print)
+
+        self.__jobs_executor__ = self.__JobExecutor__(self, 20, debug_print=debug_print)
         self.__jobs_executor__.start()
 
     def observe(self, debate, name=None):
@@ -34,4 +35,4 @@ class TournamentDebatesAsyncObserver(TournamentDebatesObserver):
 
     def digest(self):
         self.__jobs_executor__.wait_and_end()
-        return super(self).digest()
+        return super(TournamentDebatesAsyncObserver, self).digest()
