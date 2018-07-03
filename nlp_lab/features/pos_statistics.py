@@ -1,5 +1,4 @@
 from nlp_lab.features.interfaces import ParagraphsFeaturesExtractorBase
-from nltk import pos_tag
 
 
 class PosStatisticsFeaturesExtractor(ParagraphsFeaturesExtractorBase):
@@ -20,12 +19,11 @@ class PosStatisticsFeaturesExtractor(ParagraphsFeaturesExtractorBase):
         feature_vector = []
 
         for paragraph in paragraphs_list:
-            for tokens in paragraph.as_tokens:
-                pos_tagger = pos_tag(tokens)
-                for token in pos_tagger:
-                    total_token += 1
-                    if token[1] in self.__pos__:
-                        dict_special_mark[token[1]] += 1
+            # pos_tagger = pos_tag(paragraph.as_tokens)
+            for token, tag in paragraph.as_pos_tags:
+                total_token += 1
+                if tag in self.__pos__:
+                    dict_special_mark[tag] += 1
 
         len_special_mark = [dict_special_mark[key] for key in dict_special_mark.keys()]
         special_mark_ratio = [0 if total_token == 0 else len_special_mark[i] / total_token for i in range(len(len_special_mark))]
