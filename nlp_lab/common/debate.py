@@ -47,7 +47,7 @@ class Debate:
         """
 
         return Debate(self.speakers, [
-            Paragraph(p.speaker, ''.join([c for c in p.text if ord(c) < 256]),
+            Paragraph(p.speaker, ''.join([c for c in p.text if ord(c) < 128]),
                       p.start_time, p.end_time, p.is_meta)
             for p in self.transcript_paragraphs
         ], self.results, self.duration)
