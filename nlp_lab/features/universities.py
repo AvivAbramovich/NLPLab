@@ -2,11 +2,11 @@ from nlp_lab.features.interfaces import ParagraphsFeaturesExtractorBase
 
 
 class UniversitiesNamesFeaturesExtractor(ParagraphsFeaturesExtractorBase):
-    def __init__(self, words_list):
+    def __init__(self, universities_names_list):
         """
-        :param words_list: a list of the words
+        :param universities_names_list: a list of the words
         """
-        self.__words__ = words_list
+        self.__univ_names__ = universities_names_list
 
     @staticmethod
     def from_file(path):
@@ -17,10 +17,18 @@ class UniversitiesNamesFeaturesExtractor(ParagraphsFeaturesExtractorBase):
     def extract_features_from_paragraphs(self, debate, paragraphs_list):
         count = 0
         for paragraph in paragraphs_list:
-            for sentence in paragraph.as_tokens:
+            for sentence in paragraph.as_sentences:
                 text = sentence.lower()
-                for word in self.__words__:
-                    if word in text:
+                for univ_name in self.__univ_names__:
+                    index = text.find(univ_name)
+                    if index != -1:
+                        # now, check that it's the actual name (and not "mit" inside "admit")
+                        if index != 0 and text[index-1].isalpha():
+                            continue
+                        end_index = index + len(univ_name)
+                        if len(text) != end_index and text[end_index].isalpha():
+                            continue
+
                         count += 1
 
         return [count]

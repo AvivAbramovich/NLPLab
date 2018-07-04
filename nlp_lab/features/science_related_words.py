@@ -17,10 +17,10 @@ class ScienceRelatedPhrasesFeaturesExtractor(ParagraphsFeaturesExtractorBase):
     def extract_features_from_paragraphs(self, debate, paragraphs_list):
         count = 0
         for paragraph in paragraphs_list:
-            for sentence in paragraph.as_sentences:
-                text = sentence.lower()
-                for word in self.__phrases__:
-                    if word in text:
+            for token in paragraph.as_tokens:
+                t = token.lower()
+                for phrase in self.__phrases__:
+                    if phrase in t:
                         count += 1
 
         return [count]

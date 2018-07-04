@@ -20,10 +20,11 @@ class WordsStatisticsFeaturesExtractor(ParagraphsFeaturesExtractorBase):
                     if _token not in self.__stopwords__:
                         no_sw_bag[_token] += 1
 
-        return [len(all_words_bag),         # number of different tokens
+        res = [len(all_words_bag),         # number of different tokens
                 len(no_sw_bag),             # number of different tokens not include stopwords
                 self.std(all_words_bag),    # std of different tokens
                 self.std(no_sw_bag)]        # std of different tokens not include stopwords
+        return res
 
     @staticmethod
     def std(dictionary):

@@ -11,7 +11,7 @@ def find_transcript(driver, speakers, duration):
 
     transcript = []
     paragraphs = []
-    speakers_dict = {speaker.name: speaker for speaker in speakers}
+    speakers_lookup = SpeakerLookup(speakers)
 
     for li in transcript_ul.find_elements_by_tag_name('li'):
         start_time = int(li.get_attribute('data-stamp'))  # offset in seconds from the debate beginning
@@ -30,7 +30,7 @@ def find_transcript(driver, speakers, duration):
             if pg:
                 if pg.endswith(':'):
                     # current speaker name
-                    last_speaker = speakers_dict.get(pg[:-1], None)
+                    last_speaker = speakers_lookup.get_speaker(pg[:-1])
                 elif pg.startswith('[') and pg.endswith(']'):
                     if last_speaker:
                         paragraphs.append(Paragraph(last_speaker, pg[1:-1].strip(), start_time, is_meta=True))
@@ -45,3 +45,18 @@ def find_transcript(driver, speakers, duration):
         paragraph.end_time = duration
 
     return transcript
+
+
+class SpeakerLookup:
+    def __init__(self, speakers):
+        self.__full_name_dict__ = {speaker.name: speaker for speaker in speakers}
+        self.__last_names_dict__ = {speaker.name.split()[-1] : speaker for speaker in speakers}
+
+    def get_speaker(self, name):
+        if name in self.__full_name_dict__:
+            return self.__full_name_dict__[name]
+
+        last_name = name.split()[-1]
+        if last_name in self.__last_names_dict__:
+            return self.__last_names_dict__[last_name]
+

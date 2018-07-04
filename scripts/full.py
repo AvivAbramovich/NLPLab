@@ -78,7 +78,7 @@ if __name__ == '__main__':
         NotFunctionWordsFeaturesExtractor(),
         PowerfulWordsFeaturesExtractor(),
         ScienceRelatedPhrasesFeaturesExtractor.from_file(join('resources', 'science.txt')),
-        UniversitiesNamesFeaturesExtractor(join('resources', 'universities.txt')),
+        UniversitiesNamesFeaturesExtractor.from_file(join('resources', 'universities.txt')),
         StatisticsFeaturesExtractor(),
         AudienceReactionsFeaturesExtractor(),
         ParagraphsSpeakingTimeFeaturesExtractor(),
