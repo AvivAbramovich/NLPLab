@@ -110,6 +110,11 @@ class TournamentDebatesObserver(IDebatesObserver):
                 stderr.write('Debate %s has no transcript.\n' % ('"%s"' % debate_name if debate_name else ''))
             return
 
+        if debate.duration == -1:
+            with self._debug_print_:
+                stderr.write('Debate %s have no duration (-1).\n' % ('"%s"' % debate_name if debate_name else ''))
+            return
+
         if self._debug_print_:
             with self.__print_locker__:
                 print('Start %s' % debate_name)
@@ -151,19 +156,20 @@ class TournamentDebatesObserver(IDebatesObserver):
 
     def __on_finish_debate__(self, args, res):
         # update the relevant properties
-        with self.__locker__:
-            if self._debug_print_:
-                with self.__print_locker__:
-                    print('Finished "%s"' % args[1])
-            data, speakers_names, time_stats, labels, alt_labels, names = res
-            self.__data__ += data
-            self.__speakers_names__ += speakers_names
-            self.__labels__ += labels
-            self.__alternative_labels__ += alt_labels
-            self.__names__ += names
+        if res is not None:
+            with self.__locker__:
+                if self._debug_print_:
+                    with self.__print_locker__:
+                        print('Finished "%s"' % args[1])
+                data, speakers_names, time_stats, labels, alt_labels, names = res
+                self.__data__ += data
+                self.__speakers_names__ += speakers_names
+                self.__labels__ += labels
+                self.__alternative_labels__ += alt_labels
+                self.__names__ += names
 
-            for k, v in time_stats.items():
-                self.__time_statistics__[k] += v
+                for k, v in time_stats.items():
+                    self.__time_statistics__[k] += v
 
     def get_average_extractor_time(self):
         return {
