@@ -6,6 +6,7 @@ class AudienceReactionsFeaturesExtractor(ParagraphsFeaturesExtractorBase):
     __applause__ = 'applause'
     __affirmative__ = 'affirmative'
     __bell__ = 'bell'
+    __booing__ = 'booing'
     __ignore__ = [
         'inaudible',
         'unintelligible',
@@ -19,6 +20,7 @@ class AudienceReactionsFeaturesExtractor(ParagraphsFeaturesExtractorBase):
         laugh_count = 0
         affirmative_count = 0
         bell_count = 0
+        booing_count = 0
         speaking_simultaneously_count = 0
 
         for p in paragraphs_list:
@@ -32,17 +34,23 @@ class AudienceReactionsFeaturesExtractor(ParagraphsFeaturesExtractorBase):
                         laugh_count += 1
                         flag = True
 
+                # applause
                 if self.__applause__ in t:
                     applause_count += 1
                     flag = True
 
+                # affirmative
                 if self.__affirmative__ in t:
                     affirmative_count += 1
                     flag = True
 
+                # bell
                 if self.__bell__ in t:
                     bell_count += 1
                     flag = True
+
+                if self.__booing__ in t:
+                    booing_count += 1
 
                 if self.__speaking_simultaneously__ in t:
                     speaking_simultaneously_count += 1
@@ -60,13 +68,15 @@ class AudienceReactionsFeaturesExtractor(ParagraphsFeaturesExtractorBase):
                 laugh_count,
                 affirmative_count,
                 bell_count,
-                speaking_simultaneously_count]
+                speaking_simultaneously_count,
+                booing_count]
 
     def features_descriptions(self):
         return [
-            "num. appluases",
-            "num. laughter",
-            "num. affirmatives",
-            "num. bell rings",
-            "num. speaking simultaneously"
+            'num. appluases',
+            'num. laughter',
+            'num. affirmatives',
+            'num. bell rings',
+            'num. speaking simultaneously',
+            'num. booing'
         ]
