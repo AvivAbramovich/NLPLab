@@ -51,6 +51,7 @@ class AudienceReactionsFeaturesExtractor(ParagraphsFeaturesExtractorBase):
 
                 if self.__booing__ in t:
                     booing_count += 1
+                    flag = True
 
                 if self.__speaking_simultaneously__ in t:
                     speaking_simultaneously_count += 1
