@@ -15,7 +15,7 @@ def __fetch_single_debate__(url, dir_path):
     try:
         debate = fetch_single_debate(url)
     except Exception as e:
-        stderr.write('Failed to parse "%s": %s' % (url, e))
+        stderr.write('Failed to parse "%s": %s\n' % (url, e))
         # sleep(1)
         # print_exc()
     else:
@@ -32,10 +32,14 @@ if __name__ == '__main__':
     args_parser = ArgumentParser()
     args_parser.add_argument('p', help='Directory path to save the XMLs', default=None)
     args_parser.add_argument('--url', help='specific url to parse and dump', default=None)
+    args_parser.add_argument('--fast', help='Find all debates fast', default=False, action='store_true')
     args = args_parser.parse_args()
 
     if args.url is None:
-        for debate_url in find_all_debates():
+        g = find_all_debates()
+        if args.fast:
+            g = list(g)
+        for debate_url in g:
             __fetch_single_debate__(debate_url, args.p)
     else:
         __fetch_single_debate__(args.url, args.p)

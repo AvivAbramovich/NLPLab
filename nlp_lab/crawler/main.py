@@ -4,12 +4,13 @@ from time import sleep
 from warnings import warn
 
 from selenium.webdriver import Chrome
+from selenium.common.exceptions import NoSuchElementException
 
 from duration import find_duration
 from nlp_lab.common import Debate
 from results import find_debate_results
 from speakers import find_speakers
-from transcript import find_transcript
+from transcript import find_transcript, find_transcript_button
 
 
 def fetch_single_debate(url, driver=None):
@@ -19,10 +20,17 @@ def fetch_single_debate(url, driver=None):
     else:
         close = False
 
+    print('Start crawling "%s"' % url)
     try:
         driver.get(url)
 
         sleep(5)  # wait the page to fully load
+
+        # start by seek the transcript button, is not exists, no use for this debate...
+        try:
+            find_transcript_button(driver)
+        except NoSuchElementException:
+            raise Exception('The debate has no transcript, aborting')
 
         try:
             duration = find_duration(driver)

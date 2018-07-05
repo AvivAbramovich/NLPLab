@@ -3,8 +3,12 @@ from nlp_lab.common import Paragraph
 __time_regex__ = '(\d+:)?[0-9]{2}:[0-9]{2}'
 
 
+def find_transcript_button(driver):
+    return driver.find_element_by_class_name('transcript-btn')
+
+
 def find_transcript(driver, speakers, duration):
-    driver.find_element_by_class_name('transcript-btn').click()
+    find_transcript_button(driver).click()
     transcript_ul = driver.find_element_by_id('transcript')
 
     last_speaker = None
