@@ -2,15 +2,20 @@ from argparse import ArgumentParser
 from os import listdir
 from os.path import join
 from time import time
-
+import random
+import numpy as np
 # cross validation
+
 from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import KFold
+
 # classifiers
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.feature_selection import SelectKBest
 from sklearn.feature_selection import chi2
+
 
 from nlp_lab.evaluation.observers.tournament import TournamentDebatesObserver
 from nlp_lab.evaluation.observers.async_tournament import TournamentDebatesAsyncObserver
@@ -32,6 +37,7 @@ def test_on_classifiers(data, labels, cv=5, name=None, tabs=0):
         KNeighborsClassifier()
     ]
 
+
     if name:
         print(name + ':')
     print('Num classes: %d' % len(set(labels)))
@@ -42,7 +48,7 @@ def test_on_classifiers(data, labels, cv=5, name=None, tabs=0):
         print(prefix + cls.__class__.__name__)
         print(prefix + '\tTest on all features')
         scores = cross_val_score(cls, data, labels, cv=cv)
-        print(prefix + '\t\tcross-validation average scores: %.3f\n' % (sum(scores) / len(scores)))
+        print(prefix + '\t\tcross-validation average scores0 : %.3f\n' % (sum(scores) / len(scores)))
 
         for size in k_best_sizes:
             if size < data.shape[1]:
@@ -54,6 +60,62 @@ def test_on_classifiers(data, labels, cv=5, name=None, tabs=0):
                 print(prefix + '\t\t' + str(selected_features))
                 print('')  # line separation between sizes
 
+
+def test_on_debates(data,labels,cv = 5, name = None,tabs = 0):
+    classifiers = [
+        MultinomialNB(),
+        DecisionTreeClassifier(),
+        KNeighborsClassifier()
+    ]
+
+    num_debates = (int)(data.shape[0] / 5)
+
+    if name:
+        print(name + ':')
+    print('Num classes: %d' % len(set(labels)))
+
+    prefix = '\t' * tabs
+
+    score = 0
+    number_of_tests = int(num_debates * cv /100) + 3
+    for i in range(cv):
+        tested_debates = random.sample(list(range(num_debates)), k = number_of_tests)
+        test_indexes = []
+        for a in tested_debates:
+            test_indexes.extend(list(range(a*5,a*5+5)))
+
+        train_feature = [data[x] for x in range(len(data)) if x not in test_indexes]
+        tested_feature = [data[x] for x in range(len(data)) if x in test_indexes]
+        train_labels = [labels[x] for x in range(len(labels)) if x not in test_indexes]
+        tested_labels = [labels[x] for x in range(len(labels)) if x in test_indexes]
+
+        for cls in classifiers:
+            print(prefix + cls.__class__.__name__)
+            print(prefix + '\tTest on all features')
+            scores = cross_val_score(cls, data, labels, cv=cv)
+
+
+            cls.fit(train_feature, train_labels)
+            predicted_vector = cls.predict(tested_feature)
+            predicted_vector_real =[]
+            for chunk_index in range(0,len(predicted_vector),5):
+                chunk = predicted_vector[chunk_index: chunk_index + 5]
+                median = np.median(chunk)
+                predicted_vector_real.extend(np.repeat(median,5))
+           # print(prefix + '\t\tcross-validation average scores0 : %.3f\n' % (sum(scores) / len(scores)))
+
+
+            """
+            for size in k_best_sizes:
+                if size < data.shape[1]:
+                    print(prefix + '\tTest on %d best features' % size)
+                    new_data, selected_features = select_k_features(data, labels, size)
+                    scores = cross_val_score(cls, new_data, labels, cv=cv)
+                    print(prefix + '\t\tcross-validation average scores: %.3f' % (sum(scores) / len(scores)))
+                    print(prefix + '\t\tthe indexes of the selected features are:')
+                    print(prefix + '\t\t' + str(selected_features))
+                    print('')  # line separation between sizes
+            """
 
 def select_k_features(data, labels, k):
     k_best = SelectKBest(score_func=chi2, k=k)
@@ -117,7 +179,7 @@ if __name__ == '__main__':
     observer_cls = TournamentDebatesAsyncObserver if args.async else TournamentDebatesObserver
     observer = observer_cls(features_extractors, main_labeling_system, [al[0] for al in alternative_ls], debug_print=args.debug)
 
-    args.p = 'debates'
+    args.p = 'debates1'
     debate_scripts = [filename for filename in listdir(args.p) if filename.endswith('.xml')]
 
     if args.limit:
@@ -151,6 +213,7 @@ if __name__ == '__main__':
 
     print('Results base on %d debates:' % len(debate_scripts))
 
+    test_on_debates(data, labels, args.cv, name=main_name, tabs=1)
     test_on_classifiers(data, labels, args.cv, name=main_name, tabs=1)
     for ind in range(len(alternative_ls)):
         _labels = alternative_labels[:,ind]
