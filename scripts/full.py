@@ -29,6 +29,7 @@ from nlp_lab.schema.parse import parse_file
 
 sizes = [1000, 10000, 50000]
 k_best_sizes = [10, 20, 30, 50]
+binary_indexes = [2, 3]
 
 
 def test_on_classifiers(data, labels, cv=5, name=None, tabs=0):
@@ -57,8 +58,8 @@ def test_on_classifiers(data, labels, cv=5, name=None, tabs=0):
                 new_data, selected_features = select_k_features(data, labels, size)
                 scores = cross_val_score(cls, new_data, labels, cv=cv)
                 print(prefix + '\t\tcross-validation average scores: %.3f' % (sum(scores) / len(scores)))
-                print(prefix + '\t\tthe indexes of the selected features are:')
-                print(prefix + '\t\t' + str(selected_features))
+                #print(prefix + '\t\tthe indexes of the selected features are:')
+                #print(prefix + '\t\t' + str(selected_features))
                 print('')  # line separation between sizes
 
 
@@ -69,6 +70,9 @@ def test_on_debates(data,labels,cv = 5, name = None,tabs = 0):
         KNeighborsClassifier()
     ]
 
+    if name:
+        print(name + ':')
+
     num_debates = (int)(data.shape[0] / 5)
     print('Num classes: %d' % len(set(labels)))
 
@@ -76,6 +80,8 @@ def test_on_debates(data,labels,cv = 5, name = None,tabs = 0):
 
     number_of_tests = int(num_debates * cv /100)
     for cls in classifiers:
+
+
         print(prefix + cls.__class__.__name__)
         tested_debates = random.sample(list(range(num_debates)), k = number_of_tests)
         test_indexes = []
@@ -100,13 +106,39 @@ def test_on_debates(data,labels,cv = 5, name = None,tabs = 0):
             score += accuracy_score(tested_labels,predicted_vector_real)
         score /= cv
 
-        if name:
-            print(name + ':')
+
         print(prefix + '\tTest on all features')
         print(prefix + '\t\tcross-validation average scores: %.3f' % score)
+        print('')
 
-        # print(prefix + '\t\tcross-validation average scores0 : %.3f\n' % (sum(scores) / len(scores)))
+        for size in k_best_sizes:
+            if size < data.shape[1]:
+                new_data, selected_features = select_k_features(data, labels, size)
+                train_feature = [new_data[x] for x in range(len(new_data)) if x not in test_indexes]
+                tested_feature = [new_data[x] for x in range(len(new_data)) if x in test_indexes]
+                train_labels = [labels[x] for x in range(len(labels)) if x not in test_indexes]
+                tested_labels = [labels[x] for x in range(len(labels)) if x in test_indexes]
 
+                print(prefix + '\tTest on %d best features' % size)
+               # print(prefix + '\t\tthe indexes of the selected features are:')
+                #print(prefix + '\t\t' + str(selected_features))
+
+                score = 0
+                for i in range(cv):
+                    cls.fit(train_feature, train_labels)
+                    predicted_vector = cls.predict(tested_feature)
+                    predicted_vector_real = []
+                    for chunk_index in range(0, len(predicted_vector), 5):
+                        chunk = predicted_vector[chunk_index: chunk_index + 5]
+                        median = np.median(chunk)
+                        predicted_vector_real.extend(np.repeat(median, 5))
+
+                    score += accuracy_score(tested_labels, predicted_vector_real)
+                score /= cv
+
+
+                print(prefix + '\t\tcross-validation average scores: %.3f' % score)
+                print('')
 
 
 def select_k_features(data, labels, k):
@@ -205,12 +237,30 @@ if __name__ == '__main__':
 
     print('Results base on %d debates:' % len(debate_scripts))
 
-    test_on_debates(data, labels, args.cv, name=main_name, tabs=1)
-    #test_on_classifiers(data, labels, args.cv, name=main_name, tabs=1)
+    print('arguments analysis:\n\n')
+    test_on_classifiers(data, labels, args.cv, name=main_name, tabs=1)
     for ind in range(len(alternative_ls)):
         _labels = alternative_labels[:,ind]
-        test_on_debates(data, _labels, args.cv, name=alternative_ls[ind][1], tabs=1)
-        #test_on_classifiers(data, _labels, args.cv, name=alternative_ls[ind][1], tabs=1)
+        test_on_classifiers(data, _labels, args.cv, name=alternative_ls[ind][1], tabs=1)
+
+
+    print('\n\n\n\n\n\n\n\n\ndebates analysis\n\n')
+    for binary_ind in binary_indexes:
+        _labels = alternative_labels[:, binary_ind]
+        test_on_debates(data, _labels, args.cv, name=alternative_ls[binary_ind][1], tabs=1)
+
+    '''
+    print('\n\n\n\n\n\n\n\n\ndebates analysis: cv = 7\n\n')
+    for binary_ind in binary_indexes:
+        _labels = alternative_labels[:, binary_ind]
+        test_on_debates(data, _labels, cv = 7, name=alternative_ls[binary_ind][1], tabs=1)
+
+
+
+    print('\n\n\n\n\n\n\n\n\ndebates analysis: cv  = 3 \n\n')
+    for binary_ind in binary_indexes:
+        _labels = alternative_labels[:, binary_ind]
+        test_on_debates(data, _labels, cv = 3, name=alternative_ls[binary_ind][1], tabs=1) '''
 
     print('Features extractors average time (per record):')
     time_stats = observer.get_average_extractor_time()
@@ -223,3 +273,4 @@ if __name__ == '__main__':
     print('Features descriptions:')
     for t in enumerate(observer.get_features_descriptions()):
         print('%d: %s' % t)
+
